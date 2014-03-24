@@ -29,13 +29,11 @@ struct timeval tv1,tv2;
 static void alloc_buffers_and_user_data(cl_context context)
 {
   // CPU side
-  input_data = malloc((SIZE+2) * sizeof(float));
-  output_data = malloc((SIZE+2) * sizeof(float));
+  input_data = calloc((SIZE+2), sizeof(float));
+  output_data = calloc((SIZE+2), sizeof(float));
 
   for(int i = 0; i < SIZE; i++)
     input_data[i] = (float)i;
-
-  input_data[SIZE] = input_data[SIZE+1] = 0 ; 
 
   // Allocate buffers inside device memory
   //
@@ -55,15 +53,16 @@ void heat(float* next, const float* previous) {
   for(unsigned int i=0;i<SIZE;i++)
     next[i+1] = (previous[i] + previous[i+1] * 2 + previous[i+2]) / 4;
 }
- 
 
 static void check_output_data(void)
 {
   /* Version cpu pour comparaison */
-  float* reference = (float*) malloc((SIZE+2)*sizeof(float));
+  float* reference = (float*) calloc((SIZE+2), sizeof(float));
+
+  memset(reference, 0, (SIZE+2) * sizeof(float)) ;
+
   gettimeofday(&tv1,NULL);
  
-  reference[SIZE] = reference[SIZE+1] = 0 ; 
  
   for(int i=0;i<ITERATIONS;++i) {
     heat(reference, input_data);
@@ -102,6 +101,10 @@ static void send_input(cl_command_queue queue)
   err = clEnqueueWriteBuffer(queue, input_buffer, CL_TRUE, 0,
 			     sizeof(float) * (SIZE+2), input_data, 0, NULL, NULL);
   check(err, "Failed to write to input array");
+
+  err = clEnqueueWriteBuffer(queue, output_buffer, CL_TRUE, 0,
+			     sizeof(float) * (SIZE+2), output_data, 0, NULL, NULL);
+  check(err, "Failed to write to output array");
 }
 
 static void retrieve_output(cl_command_queue queue)

@@ -39,9 +39,9 @@ cl_mem output_buffer;  // device memory used for output data
 static void alloc_buffers_and_user_data(cl_context context)
 {
   // CPU side
-  input_data  = malloc(TOTALSIZE * sizeof(float));
-  output_data = malloc(TOTALSIZE * sizeof(float));
-  tmp         = malloc(TOTALSIZE * sizeof(float));
+  input_data  = calloc(TOTALSIZE, sizeof(float));
+  output_data = calloc(TOTALSIZE, sizeof(float));
+  tmp         = calloc(TOTALSIZE, sizeof(float));
 
   srand(1234);
   for(int y = 0; y < SIZE; y++)
@@ -114,6 +114,10 @@ static void send_input(cl_command_queue queue)
   err = clEnqueueWriteBuffer(queue, input_buffer, CL_TRUE, 0,
 			     sizeof(float) * TOTALSIZE, input_data, 0, NULL, NULL);
   check(err, "Failed to write to input array");
+
+  err = clEnqueueWriteBuffer(queue, output_buffer, CL_TRUE, 0,
+			     sizeof(float) * TOTALSIZE, output_data, 0, NULL, NULL);
+  check(err, "Failed to write to output array");
 }
 
 static void retrieve_output(cl_command_queue queue)
