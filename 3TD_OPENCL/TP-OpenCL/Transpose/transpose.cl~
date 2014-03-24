@@ -1,0 +1,44 @@
+/* Original naive kernel */
+
+/*
+__kernel void transpose(__global float *in,
+			__global float *out)
+{
+  int x = get_global_id(0);
+  int y = get_global_id(1);
+  __local float * tile;
+		     
+  out[x * get_global_size(0) + y] = in[y * get_global_size(0) + x];
+}
+*/
+
+__kernel void transpose(__global float *in,
+			__global float *out)
+{
+  int x = get_global_id(0);
+  int y = get_global_id(1);
+  __local float * tile;
+  /* Transposing into the local tile buffer  */
+  //
+  unsigned int index_in = y *SIZE  + x;
+  unsigned int local_index = get_local_id(1)*(TILE +1)+get_local_id(0);
+
+  tile[local_index] = in [index in];
+
+
+
+		     
+  /* Waiting for every thread to complete his job */
+  barrier(CLK_LOCAL_MEM_FENCE);
+
+  /* Copying the content of tile local tile into the output memory buffer*/
+
+  
+  xIndex = get_group_id(1) * SIZE + get_local_id(0);
+  yIndex = get_group_id(0) * SIZE + get_local_id(1);
+
+  unsigned int inverted_local_index = get_local_id(1)*(TILE +1)+get_local_id(0);
+  unsigned int index_out = yIndex * SIZE + xIndex;
+  out[index_out] = tile[];
+
+}
