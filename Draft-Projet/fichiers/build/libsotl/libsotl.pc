@@ -1,0 +1,11 @@
+prefix=/path
+exec_prefix=/path
+libdir=/path/lib
+includedir=/path/include/libsotl
+
+Name: libsotl
+Description: Run molecular dynamics on hybrid high performance computers
+Version: 0.1
+Libs: -L${libdir} -lsotl
+Libs.private: -lOpenCL -lm -lgomp -lGLU -lGL -lglut
+Cflags: -I${includedir}

@@ -9,6 +9,7 @@
 #include "vbo.h"
 #endif
 
+#include <omp.h>
 #include <stdio.h>
 
 static int *atom_state = NULL;
@@ -17,26 +18,43 @@ static int *atom_state = NULL;
 
 #define SHOCK_PERIOD  50
 
+struct thread_color{
+  float R, G, B;
+}proc_color[] = 
+  {{1.0,0.0,0.0},
+   {0.0,1.0,0.0},
+   {0.0,0.0,1.0},
+   {1.0,1.0,1.0},
+   {1.0,1.0,0.0}};
+
+
 // Update OpenGL Vertex Buffer Object
 //
 static void omp_update_vbo (sotl_device_t *dev)
 {
   sotl_atom_set_t *set = &dev->atom_set;
-  sotl_domain_t *domain = &dev->domain;
-
+  //sotl_domain_t *domain = &dev->domain;
+#pragma omp parallel for 
+  
   for (unsigned n = 0; n < set->natoms; n++) {
     vbo_vertex[n*3 + 0] = set->pos.x[n];
     vbo_vertex[n*3 + 1] = set->pos.y[n];
     vbo_vertex[n*3 + 2] = set->pos.z[n];
 
     // Atom color depends on z coordinate
-    {
-      float ratio = (set->pos.z[n] - domain->min_ext[2]) / (domain->max_ext[2] - domain->min_ext[2]);
+    /* if(atom_state[n]!= 0) */
+    /* { */
+    /*   float ratio =(float) ( atom_state[n]) / (float) SHOCK_PERIOD; */
+    /*   vbo_color[n*3 + 0] = (1.0 - ratio) * atom_color[0].R + ratio * 1.0; */
+    /*   vbo_color[n*3 + 1] = (1.0 - ratio) * atom_color[0].G + ratio * 0.0; */
+    /*   vbo_color[n*3 + 2] = (1.0 - ratio) * atom_color[0].B + ratio * 0.0; */
+    /*   atom_state[n]--; */
+    /* } */
 
-      vbo_color[n*3 + 0] = (1.0 - ratio) * atom_color[0].R + ratio * 1.0;
-      vbo_color[n*3 + 1] = (1.0 - ratio) * atom_color[0].G + ratio * 0.0;
-      vbo_color[n*3 + 2] = (1.0 - ratio) * atom_color[0].B + ratio * 0.0;
-      atom_state[n]--;
+    {
+      vbo_color[n*3 + 0] = proc_color[omp_get_thread_num() % 5].R;
+      vbo_color[n*3 + 1] = proc_color[omp_get_thread_num() % 5].G;
+      vbo_color[n*3 + 2] = proc_color[omp_get_thread_num() % 5].B;
     }
   }
 }
@@ -61,16 +79,40 @@ static void omp_gravity (sotl_device_t *dev)
 {
   sotl_atom_set_t *set = &dev->atom_set;
   const calc_t g = 0.005;
+  #pragma omp parallel for
+  for (unsigned n = 0; n < set->natoms; n++) {
+    set->speed.dz[n] -= g;
+  }
 
-  //TODO
 }
 
 static void omp_bounce (sotl_device_t *dev)
 {
-  sotl_atom_set_t *set = &dev->atom_set;
-  sotl_domain_t *domain = &dev->domain;
 
-  //TODO
+  sotl_atom_set_t *set = &dev->atom_set;
+  float xmin = dev->domain.min_ext[0];
+  float ymin = dev->domain.min_ext[1];
+  float zmin = dev->domain.min_ext[2];
+  float xmax = dev->domain.max_ext[0];
+  float ymax = dev->domain.max_ext[1];
+  float zmax = dev->domain.max_ext[2];
+  #pragma omp parallel for
+  for (unsigned n = 0; n < set->natoms; n++) {
+
+    if(set->pos.x[n] < xmin || set->pos.x[n] > xmax)
+      {
+	set->speed.dx[n] *= -1.0;
+      }
+    if(set->pos.y[n] < ymin || set->pos.y[n] > ymax)
+      {
+	set->speed.dy[n] *= -1.0;
+      }
+    if(set->pos.z[n] < zmin || set->pos.z[n] > zmax)
+      {
+	set->speed.dz[n] *= -1.0;
+      }
+  }
+
 }
 
 static calc_t squared_distance (sotl_atom_set_t *set, unsigned p1, unsigned p2)
@@ -92,14 +134,20 @@ static calc_t lennard_jones (calc_t r2)
 
   r6 = LENNARD_SIGMA * LENNARD_SIGMA * rr2;
   r6 = r6 * r6 * r6;
-
   return 24 * LENNARD_EPSILON * rr2 * (2.0f * r6 * r6 - r6);
 }
+
+/*  floatcmp(float* f1, float* f2){ */
+/*   return (*f1 > *f2); */
+/* } */
 
 static void omp_force (sotl_device_t *dev)
 {
   sotl_atom_set_t *set = &dev->atom_set;
+  atom_set_sort(set);
+  //  qsort(set->pos.z, set->natoms, floatcmp);
 
+#pragma omp parallel for schedule(dynamic)
   for (unsigned current = 0; current < set->natoms; current++) {
     calc_t force[3] = { 0.0, 0.0, 0.0 };
 

@@ -29,9 +29,11 @@ static void seq_update_vbo (sotl_device_t *dev)
     vbo_vertex[n*3 + 1] = set->pos.y[n];
     vbo_vertex[n*3 + 2] = set->pos.z[n];
 
+
     // Atom color depends on z coordinate
+    if(atom_state[n]!= 0)
     {
-      float ratio = (set->pos.z[n] - domain->min_ext[2]) / (domain->max_ext[2] - domain->min_ext[2]);
+      float ratio =(float) ( atom_state[n]) / (float) SHOCK_PERIOD;
 
       vbo_color[n*3 + 0] = (1.0 - ratio) * atom_color[0].R + ratio * 1.0;
       vbo_color[n*3 + 1] = (1.0 - ratio) * atom_color[0].G + ratio * 0.0;
@@ -63,15 +65,46 @@ static void seq_gravity (sotl_device_t *dev)
   const calc_t g = 0.005;
 
   //TODO
+  for (unsigned n = 0; n < set->natoms; n++) {
+    set->speed.dz[n] -= g;
+  }
+
 }
 
 static void seq_bounce (sotl_device_t *dev)
 {
-  sotl_atom_set_t *set = &dev->atom_set;
-  sotl_domain_t *domain = &dev->domain;
 
-  //TODO
+  // EN COURS
+  sotl_atom_set_t *set = &dev->atom_set;
+  //  sotl_domain_t *domain = &dev->domain;
+  float xmin = dev->domain.min_ext[0];
+  float ymin = dev->domain.min_ext[1];
+  float zmin = dev->domain.min_ext[2];
+
+  float xmax = dev->domain.max_ext[0];
+  float ymax = dev->domain.max_ext[1];
+  float zmax = dev->domain.max_ext[2];
+  
+  for (unsigned n = 0; n < set->natoms; n++) {
+
+    if(set->pos.x[n] < xmin || set->pos.x[n] > xmax)
+      {
+	set->speed.dx[n] *= -1.0;
+	atom_state[n]= SHOCK_PERIOD;
+      }
+    if(set->pos.y[n] < ymin || set->pos.y[n] > ymax)
+      {
+	set->speed.dy[n] *= -1.0;
+	atom_state[n]= SHOCK_PERIOD;
+      }
+    if(set->pos.z[n] < zmin || set->pos.z[n] > zmax)
+      {
+	set->speed.dz[n] *= -1.0;
+	atom_state[n]= SHOCK_PERIOD;
+      }
+  }
 }
+
 
 static calc_t squared_distance (sotl_atom_set_t *set, unsigned p1, unsigned p2)
 {
