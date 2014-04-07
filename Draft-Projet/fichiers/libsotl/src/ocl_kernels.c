@@ -68,8 +68,10 @@ border_collision (sotl_device_t *dev)
     check(err, "Failed to exec kernel: %s\n", kernel_name(k));
 }
 
-void update_position(sotl_device_t *dev)
+void update_position(sotl_device_t *dev, const unsigned begin,
+                     const unsigned end)
 {
+    unsigned offset = atom_set_offset(&dev->atom_set);
     size_t global, local;
 
     int k = KERNEL_UPDATE_POSTION;
@@ -79,9 +81,12 @@ void update_position(sotl_device_t *dev)
     err |= clSetKernelArg (dev->kernel[k], 1, sizeof (cl_mem), cur_spd_buf(dev));
     err |= clSetKernelArg (dev->kernel[k], 2, sizeof (cl_mem), &dev->min_buffer);
     err |= clSetKernelArg (dev->kernel[k], 3, sizeof (cl_mem), &dev->max_buffer);
+    err |= clSetKernelArg (dev->kernel[k], 4, sizeof (offset), &offset);
+    err |= clSetKernelArg (dev->kernel[k], 5, sizeof (begin), &begin);
+    err |= clSetKernelArg (dev->kernel[k], 6, sizeof (end), &end);
     check(err, "Failed to set kernel arguments: %s", kernel_name(k));
 
-    global = dev->atom_set.offset * 3;
+    global = ROUND(end) - (begin & (~(dev->tile_size - 1)));
     local = MIN(dev->tile_size, dev->max_workgroup_size);
 
     err = clEnqueueNDRangeKernel (dev->queue, dev->kernel[k], 1, NULL, &global, &local, 0,
@@ -177,22 +182,29 @@ void gravity (sotl_device_t *dev)
     check(err, "Failed to exec kernel: %s\n", kernel_name(k));
 }
 
-void reset_int_buffer(sotl_device_t *dev, cl_mem * buff_dst, unsigned nb_elems)
+void reset_int_buffer(sotl_device_t *dev, cl_mem *buffer, const unsigned begin,
+                      const unsigned end)
 {
     size_t global, local;
     cl_int err;
     int k = KERNEL_RESET_BOXES;
 
-    err  = clSetKernelArg (dev->kernel[k], 0, sizeof(cl_mem),  buff_dst);
-    err  = clSetKernelArg (dev->kernel[k], 1, sizeof(nb_elems),  &nb_elems);
+    err  = clSetKernelArg (dev->kernel[k], 0, sizeof(cl_mem),  buffer);
+    err  = clSetKernelArg (dev->kernel[k], 1, sizeof(begin),  &begin);
+    err  = clSetKernelArg (dev->kernel[k], 2, sizeof(end),  &end);
     check(err, "Failed to set kernel arguments: %s", kernel_name(k));
 
-    global = ROUND(nb_elems);
+    global = ROUND(end) - (begin & (~(dev->tile_size - 1)));
     local = MIN(dev->tile_size, dev->max_workgroup_size);
 
     clEnqueueNDRangeKernel (dev->queue, dev->kernel[k], 1, NULL, &global, &local, 0,
 			    NULL, prof_event_ptr(dev,k));
     check(err, "Failed to exec kernel: %s\n", kernel_name(k));
+}
+
+void reset_box_buffer(sotl_device_t *dev)
+{
+    reset_int_buffer(dev, &dev->box_buffer, 0, dev->domain.total_boxes + 1);
 }
 
 void ocl_reset_calc_t_buffer(sotl_device_t *dev, cl_mem *buffer,
@@ -214,11 +226,10 @@ void ocl_reset_calc_t_buffer(sotl_device_t *dev, cl_mem *buffer,
     check(err, "Failed to exec kernel: %s.\n", kernel_name(k));
 }
 
-void box_count(sotl_device_t *dev, const unsigned begin,
-               const unsigned end)
+static void box_count(sotl_device_t *dev, const unsigned begin,
+                      const unsigned end, const int k)
 {
     size_t global, local;
-    int k = KERNEL_COUNT;
     int err = CL_SUCCESS;
     unsigned offset = atom_set_offset(&dev->atom_set);
 
@@ -238,6 +249,18 @@ void box_count(sotl_device_t *dev, const unsigned begin,
     clEnqueueNDRangeKernel (dev->queue, dev->kernel[k], 1, NULL, &global, &local, 0,
 			    NULL, prof_event_ptr(dev,k));
     check(err, "Failed to exec kernel: %s\n", kernel_name(k));
+}
+
+void box_count_all_atoms(sotl_device_t *dev, const unsigned begin,
+                         const unsigned end)
+{
+    box_count(dev, begin, end, KERNEL_BOX_COUNT_ALL_ATOMS);
+}
+
+void box_count_own_atoms(sotl_device_t *dev, const unsigned begin,
+                         const unsigned end)
+{
+    box_count(dev, begin, end, KERNEL_BOX_COUNT_OWN_ATOMS);
 }
 
 void box_lennard_jones(sotl_device_t *dev, const unsigned begin,
@@ -282,11 +305,10 @@ void box_lennard_jones(sotl_device_t *dev, const unsigned begin,
     check(err, "Failed to exec kernel: %s.\n", kernel_name(k));
 }
 
-void box_sort(sotl_device_t *dev, const unsigned begin,
-              const unsigned end)
+static void box_sort(sotl_device_t *dev, const unsigned begin,
+                     const unsigned end, const int k)
 {
   size_t global, local;
-  int k = KERNEL_SORT;
   unsigned offset = atom_set_offset(&dev->atom_set);
 
   int err = CL_SUCCESS;
@@ -309,7 +331,18 @@ void box_sort(sotl_device_t *dev, const unsigned begin,
 				NULL, prof_event_ptr(dev,k));
   check(err, "Failed to exec kernel: %s\n", kernel_name(k));
 }
-  
+
+void box_sort_all_atoms(sotl_device_t *dev, const unsigned begin,
+                        const unsigned end)
+{
+    box_sort(dev, begin, end, KERNEL_BOX_SORT_ALL_ATOMS);
+}
+
+void box_sort_own_atoms(sotl_device_t *dev, const unsigned begin,
+                        const unsigned end)
+{
+    box_sort(dev, begin, end, KERNEL_BOX_SORT_OWN_ATOMS);
+}
 
 #ifdef HAVE_LIBGL
 void update_vertices (sotl_device_t *dev)
@@ -468,22 +501,23 @@ static void scan_values(sotl_device_t *dev, int nvalues, int offset_in, int offs
     }
 }
 
-void scan(sotl_device_t *dev)
+void scan(sotl_device_t *dev, const unsigned begin, const unsigned end)
 {
-    int offset_in = 0;
-    int offset_out = 0;
+    int offset_in = begin;
+    int offset_out = begin;
+    int nvalues = end - begin;
 
-    int vtc = exec_scan_kernel(dev, &dev->box_buffer, offset_in, offset_out, dev->domain.total_boxes + 1,
-			       prof_event_ptr(dev, KERNEL_SCAN));
+    int vtc = exec_scan_kernel(dev, &dev->box_buffer, offset_in, offset_out,
+                               nvalues, prof_event_ptr(dev, KERNEL_SCAN));
 
     // Test if we need to execute another scan
     if (vtc > 1)
     { 
-        int offset_in = 0;
-        int offset_out = ALRND(16, vtc);
+        int offset_in = begin;
+        int offset_out = ALRND(16, begin + vtc);
 
         scan_values(dev, vtc, offset_in, offset_out);
-        scan_down_step(dev, &dev->box_buffer, dev->domain.total_boxes + 1, 0, 0);
+        scan_down_step(dev, &dev->box_buffer, nvalues, begin, begin);
     }
 }
 

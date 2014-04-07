@@ -1,9 +1,5 @@
 #version 120
 
-uniform vec4 AtomColor0;
-uniform vec4 AtomColor1;
-uniform vec3 ZCut;
-
 uniform float PointSize;
 
 uniform vec3 MinExt, MaxExt;
@@ -30,10 +26,7 @@ void main()
      vert.z < MinExt[2] || vert.z > MaxExt[2]) {
     color = vec4(0.7, 0.7, 0.7, 0.5);
   } else {
-    if(vert.z < ZCut.y)
-      color = AtomColor0;
-    else
-      color = AtomColor1;
+    color = gl_Color;
   }
 
 }

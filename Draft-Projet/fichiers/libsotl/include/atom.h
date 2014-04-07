@@ -38,7 +38,12 @@ typedef struct atom_set {
     sotl_atom_speed_t speed;    /**< speeds in dx, dy, dz */
     unsigned natoms;            /**< total number of atoms */
     unsigned current;           /**< current number of atoms (eg. during filling phase) */
-    unsigned offset;            /**< maximum capacity */
+    unsigned offset;            /**< maximum capacity of atoms */
+
+    /* Only used in multi devices. */
+    unsigned nghosts_min;       /**< number of ghosts on left border in Z */
+    unsigned nghosts_max;       /**< number of ghosts on right border in Z */
+    unsigned offset_ghosts;     /**< maximum capacity of ghosts */
 } sotl_atom_set_t;
 
 /**
@@ -85,11 +90,6 @@ size_t atom_set_offset(const sotl_atom_set_t *set);
  * Get size in bytes of the atom set.
  */
 size_t atom_set_size(sotl_atom_set_t *set);
-
-/**
- * Get maximum number of atoms in one border (only in multi devices).
- */
-size_t atom_set_border_offset(const sotl_atom_set_t *set);
 
 /**
  * Get size in bytes of one border (only in multi devices).

@@ -27,12 +27,11 @@
 #endif
 
 GLfloat *vbo_vertex;
-GLfloat *vbo_normal;
 GLfloat *vbo_color;
+GLfloat *vbo_normal;
 GLuint *tridx;          //approximation
 GLuint nb_indexes = 0;
 GLfloat *vertex_model;
-
 
 GLuint nb_vertices = 0;
 GLuint vertices_per_atom = 0;
@@ -42,9 +41,9 @@ static GLuint vi = 0;
 static GLuint ni = 0;
 static GLuint ci = 0;
 
-GLuint vbovid;
+GLuint vbovid, vbocid;
 #ifdef _SPHERE_MODE_
-static GLuint vbonid, vbocid, vboidx;
+static GLuint vbonid, vboidx;
 #endif
 
 atom_skin_t atom_skin = SPHERE_SKIN;
@@ -67,9 +66,9 @@ void vbo_initialize (unsigned natoms)
   nb_vertices = VERTICES*natoms;
 
   vbo_vertex = xmalloc(3*nb_vertices*sizeof(float));
+  vbo_color = xmalloc(3*nb_vertices*sizeof(GLfloat));
 #ifdef _SPHERE_MODE_
   vertex_model = xmalloc(2*3*vertices_per_atom*sizeof(GLfloat));
-  vbo_color = xmalloc(3*nb_vertices*sizeof(GLfloat));
   vbo_normal = xmalloc(3*nb_vertices*sizeof(GLfloat));
   tridx = xmalloc(2*3*nb_vertices*sizeof(GLuint));
 #endif
@@ -84,16 +83,16 @@ void vbo_initialize (unsigned natoms)
 void vbo_finalize (void)
 {
     free(vbo_vertex);
+    free(vbo_color);
 #ifdef _SPHERE_MODE_
     free(vertex_model);
-    free(vbo_color);
     free(vbo_normal);
     free(tridx);
 
     glDeleteBuffers(1, &vbonid);
-    glDeleteBuffers(1, &vbocid);
     glDeleteBuffers(1, &vboidx);
 #endif
+    glDeleteBuffers(1, &vbocid);
     glDeleteBuffers(1, &vbovid);
 }
 
@@ -125,18 +124,18 @@ void vbo_clear (void)
 void vbo_build (sotl_device_t *dev)
 {
 #ifdef _SPHERE_MODE_
-    glGenBuffers(1, &vbocid);
-    glBindBuffer(GL_ARRAY_BUFFER, vbocid);
-    glColorPointer(3, GL_FLOAT, 0, 0);
-    glBufferData(GL_ARRAY_BUFFER, nb_vertices*3*sizeof(float), vbo_color, GL_STATIC_DRAW);
-    dev->mem_allocated += nb_vertices*3*sizeof(float);
-
     glGenBuffers(1, &vbonid);
     glBindBuffer(GL_ARRAY_BUFFER, vbonid);
     glNormalPointer(GL_FLOAT, 3*sizeof(float), 0);
     glBufferData(GL_ARRAY_BUFFER, nb_vertices*3*sizeof(float), vbo_normal, GL_STATIC_DRAW);
     dev->mem_allocated += nb_vertices*3*sizeof(float);
 #endif
+
+    glGenBuffers(1, &vbocid);
+    glBindBuffer(GL_ARRAY_BUFFER, vbocid);
+    glColorPointer(3, GL_FLOAT, 0, 0);
+    glBufferData(GL_ARRAY_BUFFER, nb_vertices*3*sizeof(float), vbo_color, GL_STATIC_DRAW);
+    dev->mem_allocated += nb_vertices*3*sizeof(float);
 
     glGenBuffers(1, &vbovid);
     glBindBuffer(GL_ARRAY_BUFFER, vbovid);
@@ -152,9 +151,9 @@ void vbo_build (sotl_device_t *dev)
 #endif
 
 #ifdef _SPHERE_MODE_
-    glEnableClientState(GL_COLOR_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
 #endif
+    glEnableClientState(GL_COLOR_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
 }
 
@@ -180,21 +179,25 @@ void vbo_render (sotl_device_t *dev)
 
     // Initialize PointSize of atoms (on the near clip)
     glUniform1f(psize_location, 2 * ATOM_RADIUS * scale_factor);
-    // Pass Color
-    glUniform4f(color0_location, atom_color[0].R, atom_color[0].G, atom_color[0].B, 1.0);
-    glUniform4f(color1_location, atom_color[1].R, atom_color[1].G, atom_color[1].B, 1.0);
 
     // Pass min & max extents
     glUniform3f(minext_location, get_global_domain()->min_ext[0], get_global_domain()->min_ext[1], get_global_domain()->min_ext[2]);
     glUniform3f(maxext_location, get_global_domain()->max_ext[0], get_global_domain()->max_ext[1], get_global_domain()->max_ext[2]);
 
-    // Pass partionning limits
-    glUniform3f(zcut_location, zcut[0], zcut[1], zcut[2]);
-
-    if (dev->compute != SOTL_COMPUTE_OCL)
+    if (dev->compute != SOTL_COMPUTE_OCL) {
+      // Refresh vertices
+      glBindBuffer(GL_ARRAY_BUFFER, vbovid);
       glBufferSubData(GL_ARRAY_BUFFER, 0, nb_vertices*3*sizeof(float), vbo_vertex);
+      // Refresh colors
+      glBindBuffer(GL_ARRAY_BUFFER, vbocid);
+      glBufferSubData(GL_ARRAY_BUFFER, 0, nb_vertices*3*sizeof(float), vbo_color);      
+    }
+
+    glEnableClientState(GL_COLOR_ARRAY);
 
     glDrawArrays(GL_POINTS, 0, nb_vertices);
+
+    glDisableClientState(GL_COLOR_ARRAY);
 
     glUseProgram(0);
 
@@ -252,6 +255,11 @@ static void addVertice(GLfloat x, GLfloat y, GLfloat z)
     vbo_vertex[vi++] = y;
     vbo_vertex[vi++] = z;
     //vbo_vertex[vi++] = 1.0f;
+
+    vbo_color[ci++] = atom_color[0].R;
+    vbo_color[ci++] = atom_color[0].G;
+    vbo_color[ci++] = atom_color[0].B;
+    //  vbo_color[ci++] = 1.0f;
 }
 #endif
 

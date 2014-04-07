@@ -14,9 +14,6 @@
 GLuint v_shader, f_shader;
 GLuint shader_program;
 GLuint psize_location,
-  color0_location,
-  color1_location,
-  zcut_location,
   minext_location,
   maxext_location;
 
@@ -85,9 +82,6 @@ void shadersInit(void)
 
   glUseProgram(shader_program);
   psize_location = glGetUniformLocation(shader_program, "PointSize");
-  color0_location = glGetUniformLocation(shader_program, "AtomColor0");
-  color1_location = glGetUniformLocation(shader_program, "AtomColor1");
-  zcut_location = glGetUniformLocation(shader_program, "ZCut");
   minext_location = glGetUniformLocation(shader_program, "MinExt");
   maxext_location = glGetUniformLocation(shader_program, "MaxExt");
   glUseProgram(0);

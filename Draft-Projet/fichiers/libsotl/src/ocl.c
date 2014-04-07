@@ -137,7 +137,7 @@ void ocl_init(sotl_device_t *dev)
 	     OPENCL_BUILD_OPTIONS
 	     "-DTILE_SIZE=%d "
 	     "-DSUBCELL=%d "
-             "-DDELTA_T=%f "
+             "-DDELTA_T=%.10f "
 #ifdef SLIDE
 	     "-DSLIDE=%d "
 #endif
@@ -170,7 +170,8 @@ void ocl_init(sotl_device_t *dev)
       strcat (options, " -DHAVE_MULTI");
 
 #ifdef FORCE_N_UPDATE
-    strcat (options, " -DFORCE_N_UPDATE");
+    if (!sotl_have_multi())
+      strcat (options, " -DFORCE_N_UPDATE");
 #endif
 
 #ifdef TORUS
@@ -179,6 +180,10 @@ void ocl_init(sotl_device_t *dev)
 
 #ifdef XEON_VECTORIZATION
     strcat (options, " -DXEON_VECTORIZATION");
+#endif
+
+#if defined(__APPLE__)
+    strcat(options, " -DHAVE_PRINTF");
 #endif
 
     if (sotl_verbose)
@@ -227,7 +232,13 @@ void ocl_alloc_buffers (sotl_device_t *dev)
 
 void ocl_write_buffers(sotl_device_t *dev)
 {
-  device_write_buffers(dev);
+    device_write_buffers(dev);
+
+    if (sotl_have_multi()) {
+        /* In multi devices, we add ghosts at the beginning in order to
+         * have better performance. */
+        device_init_ghosts(dev);
+    }
 }
 
 static unsigned int get_zcut_for_boxes(sotl_device_t *dev)
@@ -272,8 +283,96 @@ static unsigned int get_zcut_for_boxes(sotl_device_t *dev)
   return index[1];
 }
 
+static void ocl_one_step_move_multi(sotl_device_t *dev)
+{
+    unsigned begin_left, begin, begin_right;
+    unsigned natoms_left, natoms_right;
+    unsigned end_left, end, end_right;
+
+    sotl_log(DEBUG, "Run ocl_one_step_move_multi() for '%s'.\n", dev->name);
+
+    /* Get begin/end indexes which contain all atoms. */
+    begin = atom_set_begin(&dev->atom_set);
+    end   = atom_set_end(&dev->atom_set);
+
+    /* Reset box buffer. */
+    reset_box_buffer(dev);
+
+    /* Count the number of atoms per boxes, excluding ghosts and leaving atoms
+     * which should be removed by the next call to the box_sort_all_atoms kernel. */
+    box_count_own_atoms(dev, begin, end);
+
+    /* Compute boxes offset with a prefix-sum alogrithm. */
+    scan(dev, 0, dev->domain.total_boxes);
+
+    /* Scan use alternate box buffer. */
+    copy_int_buffer(dev, &dev->calc_offset_buffer, &dev->box_buffer,
+                    dev->domain.total_boxes + 1);
+
+    /* Sort atoms. */
+    box_sort_own_atoms(dev, begin, end);
+
+    /* Box sort use alternate pos & spd buffer. */
+    dev->cur_pb = 1 - dev->cur_pb;
+    dev->cur_sb = 1 - dev->cur_sb;
+
+    /* Get number of atoms on borders. */
+    natoms_left  = device_get_natoms_left(dev);
+    natoms_right = device_get_natoms_right(dev);
+
+    /* Compute potential for left, right and center. */
+    /* Left. */
+    if (natoms_left > 0) {
+        begin_left = begin;
+        end_left   = begin_left + natoms_left;
+        sotl_log(DEBUG, "begin_left = %d, end_left = %d, natoms_left = %d\n",
+                 begin_left, end_left, end_left - begin_left);
+        box_lennard_jones(dev, begin_left, end_left);
+    }
+
+    /* Right. */
+    if (natoms_right > 0) {
+        begin_right = end - natoms_right;
+        end_right   = end;
+        sotl_log(DEBUG, "begin_right = %d, end_right = %d, natoms_right = %d\n",
+                 begin_right, end_right, end_right - begin_right);
+        box_lennard_jones(dev, begin_right, end_right);
+    }
+
+    if (natoms_left > 0 || natoms_right > 0) {
+        /* Make sure that borders have completed. */
+        clFinish(dev->queue);
+    }
+
+    /* Center. */
+    begin += natoms_left;
+    end   -= natoms_right;
+    sotl_log(DEBUG, "begin = %d, end = %d, natoms = %d\n",
+             begin, end, end - begin);
+    sotl_log(DEBUG, "total_natoms = %d\n",
+             end_right - begin_left);
+    box_lennard_jones(dev, begin, end);
+
+    /* Update atom positions. */
+    if (natoms_left > 0) {
+        update_position(dev, begin_left, end_left);
+    }
+    if (natoms_right > 0) {
+        update_position(dev, begin_right, end_right);
+    }
+    update_position(dev, begin, end);
+}
+
 void ocl_one_step_move(sotl_device_t *dev)
 {
+  unsigned begin = atom_set_begin(&dev->atom_set);
+  unsigned end   = atom_set_end(&dev->atom_set);
+
+  if (sotl_have_multi()) {
+    ocl_one_step_move_multi(dev);
+    return;
+  }
+
   if (gravity_enabled)
     gravity (dev);
 
@@ -288,11 +387,8 @@ void ocl_one_step_move(sotl_device_t *dev)
   if (force_enabled) {
 
     if (is_box_mode) {
-      unsigned begin = atom_set_begin(&dev->atom_set);
-      unsigned end   = atom_set_end(&dev->atom_set);
-
-      reset_int_buffer (dev, &dev->box_buffer, dev->domain.total_boxes + 1);
-      box_count(dev, begin, end);
+      reset_box_buffer(dev);
+      box_count_all_atoms(dev, begin, end);
 
 #if 0 && defined(HAVE_LIBGL)
       {
@@ -308,7 +404,7 @@ void ocl_one_step_move(sotl_device_t *dev)
 #endif
 
       // Calc boxes offsets
-      scan(dev); 
+      scan(dev, 0, dev->domain.total_boxes + 1);
 
       // Sort atoms in boxes
       {
@@ -317,9 +413,9 @@ void ocl_one_step_move(sotl_device_t *dev)
 			dev->domain.total_boxes + 1);
 
 	// calc_offset_buffer is modified by this kernel
-	box_sort(dev, begin, end);
+	box_sort_all_atoms(dev, begin, end);
 
-        // box_sort used alternate pos & speed buffer, so we should switch...
+        // box_sort_all_atoms used alternate pos & speed buffer, so we should switch...
 	dev->cur_pb = 1 - dev->cur_pb;
 	dev->cur_sb = 1 - dev->cur_sb;
       }
@@ -367,7 +463,7 @@ void ocl_one_step_move(sotl_device_t *dev)
 #ifdef FORCE_N_UPDATE
   if(!force_enabled)
 #endif
-    update_position(dev);
+    update_position(dev, begin, end);
 
 #ifdef HAVE_LIBGL
   if (dev->display)

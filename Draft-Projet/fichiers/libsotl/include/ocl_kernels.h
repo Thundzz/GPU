@@ -11,7 +11,8 @@
 
 /* kernel functions */
 void border_collision (sotl_device_t *dev);
-void update_position (sotl_device_t *dev);
+void update_position(sotl_device_t *dev, const unsigned begin,
+                     const unsigned end);
 void zero_speed_kernel (sotl_device_t *dev);
 void atom_collision (sotl_device_t *dev);
 void gravity (sotl_device_t *dev);
@@ -23,12 +24,23 @@ void growing_ghost (sotl_device_t *dev);
 
 void copy_int_buffer(sotl_device_t *dev, cl_mem *dst_buf, cl_mem *src_buf,
                      const unsigned nb_elems);
-void reset_int_buffer(sotl_device_t *dev, cl_mem * buff_dst, unsigned nb_elems);
-void scan (sotl_device_t *dev);
-void box_count(sotl_device_t *dev, const unsigned begin,
-               const unsigned end);
-void box_sort(sotl_device_t *dev, const unsigned begin,
-              const unsigned end);
+void reset_int_buffer(sotl_device_t *dev, cl_mem *buffer, const unsigned begin,
+                      const unsigned end);
+void reset_box_buffer(sotl_device_t *dev);
+void scan(sotl_device_t *dev, const unsigned begin, const unsigned end);
+
+void box_count_all_atoms(sotl_device_t *dev, const unsigned begin,
+                         const unsigned end);
+
+void box_count_own_atoms(sotl_device_t *dev, const unsigned begin,
+                         const unsigned end);
+
+void box_sort_all_atoms(sotl_device_t *dev, const unsigned begin,
+                        const unsigned end);
+
+void box_sort_own_atoms(sotl_device_t *dev, const unsigned begin,
+                        const unsigned end);
+
 void n2_lennard_jones (sotl_device_t *dev);
 void box_lennard_jones(sotl_device_t *dev, const unsigned begin,
                        const unsigned end);

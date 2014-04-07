@@ -73,6 +73,11 @@ void device_create_buffers(sotl_device_t *dev);
 void device_write_buffers(sotl_device_t *dev);
 
 /**
+ * Init ghosts.
+ */
+void device_init_ghosts(sotl_device_t *dev);
+
+/**
  * Read buffer objects on the given device.
  */
 void device_read_buffers(sotl_device_t *dev);
@@ -100,11 +105,6 @@ void cl_create_kernels(sotl_device_t *dev);
 void device_one_step_move(sotl_device_t *dev);
 
 /**
- * Get and print kernels info.
- */
-void device_query_kernels_info(sotl_device_t *dev);
-
-/**
  * Get number of atoms on left border (only used in multi devices).
  */
 unsigned device_get_natoms_left(const sotl_device_t *dev);
@@ -113,6 +113,17 @@ unsigned device_get_natoms_left(const sotl_device_t *dev);
  * Get number of atoms on right border (only used in multi devices).
  */
 unsigned device_get_natoms_right(const sotl_device_t *dev);
+
+/**
+ * Get total number of atoms by reading the box buffer.
+ *
+ * This function must be called after scan kernel.
+ */
+unsigned device_get_natoms(const sotl_device_t *dev);
+
+sotl_device_t *device_get_prev(sotl_device_t *dev);
+
+sotl_device_t *device_get_next(sotl_device_t *dev);
 
 extern sotl_platform_t *sotl_platforms[];
 extern unsigned sotl_nb_platforms;

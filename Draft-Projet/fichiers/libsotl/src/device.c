@@ -15,6 +15,48 @@
 
 #include <stdio.h>
 
+static int device_is_first(const sotl_device_t *dev)
+{
+    return (sotl_devices[0]->id == dev->id);
+}
+
+static int device_is_last(const sotl_device_t *dev)
+{
+    return (sotl_devices[sotl_nb_devices - 1]->id == dev->id);
+}
+
+sotl_device_t *device_get_prev(sotl_device_t *dev)
+{
+    unsigned d;
+
+    for (d = 0; d < sotl_nb_devices; d++) {
+        if (sotl_devices[d]->id == dev->id)
+            break;
+    }
+
+    if (d > 0) {
+        return sotl_devices[d - 1];
+    }
+
+    return sotl_devices[sotl_nb_devices - 1];
+}
+
+sotl_device_t *device_get_next(sotl_device_t *dev)
+{
+    unsigned d;
+
+    for (d = 0; d < sotl_nb_devices; d++) {
+        if (sotl_devices[d]->id == dev->id)
+            break;
+    }
+
+    if (d < sotl_nb_devices - 1) {
+        return sotl_devices[d + 1];
+    }
+
+    return sotl_devices[0];
+}
+
 static void release_kernels(sotl_device_t *dev)
 {
     int i;
@@ -213,13 +255,72 @@ void device_write_buffers(sotl_device_t *dev)
     write_gl_buffers(dev);
 }
 
+void device_init_ghosts(sotl_device_t *dev)
+{
+    sotl_atom_set_t *set = &dev->atom_set;
+    size_t cb, size, size_border, offset;
+
+    /* XXX: Merge code related to write pos/spd atoms... Currently, it's bad */
+
+    /**
+     * Left ghosts.
+     */
+    /* Compute the size and the offset in bytes of data to write. */
+    cb   = sizeof(calc_t) * set->nghosts_min;
+    size = atom_set_size(set) / 3;
+
+    /* Get size of one border (ie. left) (only in multi devices). */
+    size_border = atom_set_border_size(set) / 3;
+
+    /* Write positions. */
+    offset = size_border - (sizeof(calc_t) * set->nghosts_min);
+    WRITE_BUF(*cur_pos_buf(dev), cb, offset, set->pos.x - set->nghosts_min, "pos_buffer(x)");
+    offset += size + size_border * 2; /* for left and right borders. */
+    WRITE_BUF(*cur_pos_buf(dev), cb, offset, set->pos.y - set->nghosts_min, "pos_buffer(y)");
+    offset += size + size_border * 2;
+    WRITE_BUF(*cur_pos_buf(dev), cb, offset, set->pos.z - set->nghosts_min, "pos_buffer(z)");
+
+    /* Write speeds. */
+    offset = size_border - (sizeof(calc_t) * set->nghosts_min);
+    WRITE_BUF(*cur_spd_buf(dev), cb, offset, set->speed.dx - set->nghosts_min, "speed_buffer(x)");
+    offset += size + size_border * 2;
+    WRITE_BUF(*cur_spd_buf(dev), cb, offset, set->speed.dy - set->nghosts_min, "speed_buffer(y)");
+    offset += size + size_border * 2;
+    WRITE_BUF(*cur_spd_buf(dev), cb, offset, set->speed.dz - set->nghosts_min, "speed_buffer(z)");
+
+    /**
+     * Right ghosts.
+     */
+    /* Compute the size and the offset in bytes of data to write. */
+    cb   = sizeof(calc_t) * set->nghosts_max;
+    size = atom_set_size(set) / 3;
+
+    /* Get size of one border (ie. left) (only in multi devices). */
+    size_border = atom_set_border_size(set) / 3;
+
+    /* Write positions. */
+    offset = size_border + (sizeof(calc_t) * set->natoms);
+    WRITE_BUF(*cur_pos_buf(dev), cb, offset, set->pos.x + set->natoms, "pos_buffer(x)");
+    offset += size + size_border * 2; /* for left and right borders. */
+    WRITE_BUF(*cur_pos_buf(dev), cb, offset, set->pos.y + set->natoms, "pos_buffer(y)");
+    offset += size + size_border * 2;
+    WRITE_BUF(*cur_pos_buf(dev), cb, offset, set->pos.z + set->natoms, "pos_buffer(z)");
+
+    /* Write speeds. */
+    offset = size_border + (sizeof(calc_t) * set->natoms);
+    WRITE_BUF(*cur_spd_buf(dev), cb, offset, set->speed.dx + set->natoms, "speed_buffer(x)");
+    offset += size + size_border * 2;
+    WRITE_BUF(*cur_spd_buf(dev), cb, offset, set->speed.dy + set->natoms, "speed_buffer(y)");
+    offset += size + size_border * 2;
+    WRITE_BUF(*cur_spd_buf(dev), cb, offset, set->speed.dz + set->natoms, "speed_buffer(z)");
+}
+
 #define READ_BUF(buffer, cb, offset, ptr, name)                             \
     do {                                                                    \
         cl_int err;                                                         \
         err = clEnqueueReadBuffer(dev->queue, buffer, CL_TRUE, offset, cb,  \
                                   ptr, 0, NULL, NULL);                      \
         check(err, "Failed to read "name" back to host memory.");           \
-        clFinish(dev->queue);                                               \
     } while (0)
 
 void device_read_buffers(sotl_device_t *dev)
@@ -303,57 +404,6 @@ void cl_create_kernels(sotl_device_t *dev)
     }
 }
 
-void device_query_kernels_info(sotl_device_t *dev)
-{
-    cl_int err;
-    int i;
-
-    for (i = 0; i < KERNEL_TAB_SIZE; ++i) {
-        sotl_log(INFO, "Work group info for kernel '%s'.\n", kernel_name(i));
-
-        /* Work group size. */
-        size_t work_group_size;
-        err = clGetKernelWorkGroupInfo(dev->kernel[i], dev->id,
-                                       CL_KERNEL_WORK_GROUP_SIZE,
-                                       sizeof(size_t), &work_group_size, NULL);
-        check(err, "Failed to get kernel work group size.\n");
-        sotl_log(DEBUG, "WORK_GROUP_SIZE = %d\n", work_group_size);
-
-        /* Compile work group size. */
-        size_t compile_wgs[3];
-        err = clGetKernelWorkGroupInfo(dev->kernel[i], dev->id,
-                                       CL_KERNEL_COMPILE_WORK_GROUP_SIZE,
-                                       sizeof(size_t) * 3, compile_wgs, NULL);
-        check(err, "Failed to get kernel compile work group size.\n");
-        sotl_log(DEBUG, "COMPILE_WORK_GROUP_SIZE = [%d, %d, %d]\n",
-                 compile_wgs[0], compile_wgs[1], compile_wgs[2]);
-
-        /* Local mem size. */
-        cl_ulong local_mem_size;
-        err = clGetKernelWorkGroupInfo(dev->kernel[i], dev->id,
-                                       CL_KERNEL_LOCAL_MEM_SIZE,
-                                       sizeof(cl_ulong), &local_mem_size, NULL);
-        check(err, "Failed to get kernel work group size.\n");
-        sotl_log(DEBUG, "LOCAL_MEM_SIZE = %d\n", local_mem_size);
-
-        /* Preferred work group size multiple. */
-        size_t preferred_wgs_multiple;
-        err = clGetKernelWorkGroupInfo(dev->kernel[i], dev->id,
-                                       CL_KERNEL_PREFERRED_WORK_GROUP_SIZE_MULTIPLE,
-                                       sizeof(size_t), &preferred_wgs_multiple, NULL);
-        check(err, "Failed to get kernel preferred work group size multiple.\n");
-        sotl_log(DEBUG, "PREFERRED_WORK_GROUP_SIZE_MULTIPLE = %d\n", preferred_wgs_multiple);
-
-        /* Private mem size. */
-        cl_ulong private_mem_size;
-        err = clGetKernelWorkGroupInfo(dev->kernel[i], dev->id,
-                                       CL_KERNEL_PRIVATE_MEM_SIZE,
-                                       sizeof(cl_ulong), &private_mem_size, NULL);
-        check(err, "Failed to get kernel private mem size.\n");
-        sotl_log(DEBUG, "PRIVATE_MEM_SIZE = %d\n", private_mem_size);
-    }
-}
-
 static unsigned read_natoms_from_boxes(const sotl_device_t *dev, const int z)
 {
     const int shift_z = dev->domain.boxes[0] * dev->domain.boxes[1];
@@ -382,7 +432,7 @@ unsigned device_get_natoms_left(const sotl_device_t *dev)
     clFinish(dev->queue);
 
     /* Get number of atoms for the first two Z planes. */
-    return get_natoms_in_z(dev, 0, 2);
+    return get_natoms_in_z(dev, 0, 3);
 }
 
 unsigned device_get_natoms_right(const sotl_device_t *dev)
@@ -391,5 +441,10 @@ unsigned device_get_natoms_right(const sotl_device_t *dev)
     clFinish(dev->queue);
 
     /* Get number of atoms for the last two Z planes. */
-    return get_natoms_in_z(dev, dev->domain.boxes[2] - 2, dev->domain.boxes[2]);
+    return get_natoms_in_z(dev, dev->domain.boxes[2] - 3, dev->domain.boxes[2]);
+}
+
+unsigned device_get_natoms(const sotl_device_t *dev)
+{
+    return read_natoms_from_boxes(dev, dev->domain.boxes[2]);
 }

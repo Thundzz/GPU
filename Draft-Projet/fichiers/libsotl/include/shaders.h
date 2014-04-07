@@ -15,9 +15,6 @@
 
 extern GLuint shader_program;
 extern GLuint psize_location,
-  color0_location,
-  color1_location,
-  zcut_location,
   minext_location,
   maxext_location;
 

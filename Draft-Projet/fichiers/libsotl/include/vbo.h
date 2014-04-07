@@ -19,14 +19,10 @@
 typedef enum { SPHERE_SKIN, PACMAN_SKIN } atom_skin_t;
 
 extern GLfloat *vbo_vertex;
-extern GLfloat *vbo_normal;
 extern GLfloat *vbo_color;
 extern GLfloat *vertex_model;
 
-extern GLuint *triangles_index;
-extern GLuint nb_indexes;
-
-extern GLuint vbovid;
+extern GLuint vbovid, vbocid;
 
 extern GLuint nb_vertices;
 extern GLuint vertices_per_atom;

@@ -88,6 +88,17 @@ int atom_set_init(sotl_atom_set_t *set, const unsigned long natoms,
     set->current = 0;
     set->offset  = ROUND(maxatoms);
 
+    if (!sotl_have_multi()) {
+        /* No need to have ghosts for a single device. */
+        /* XXX: This is absolutely wrong when the torus mode is enabled. :-) */
+        set->offset_ghosts = 0;
+    } else {
+        set->offset_ghosts = ROUND(set->natoms * 0.05);
+    }
+
+    /* No ghosts at the beginning. */
+    set->nghosts_min = set->nghosts_max = 0;
+
     set->pos.x = malloc(atom_set_size(set));
     if (!set->pos.x)
         return SOTL_OUT_OF_MEMORY;
@@ -101,7 +112,6 @@ int atom_set_init(sotl_atom_set_t *set, const unsigned long natoms,
     }
     set->speed.dy = set->speed.dx + set->offset;
     set->speed.dz = set->speed.dy + set->offset;
-
 
     return SOTL_SUCCESS;
 }
@@ -140,7 +150,7 @@ int atom_set_add(sotl_atom_set_t *set, const calc_t x, const calc_t y,
 
 size_t atom_set_offset(const sotl_atom_set_t *set)
 {
-    return set->offset + atom_set_border_offset(set) * 2;
+    return set->offset + set->offset_ghosts * 2;
 }
 
 size_t atom_set_size(sotl_atom_set_t *set)
@@ -148,23 +158,14 @@ size_t atom_set_size(sotl_atom_set_t *set)
     return sizeof(calc_t) * set->offset * 3;
 }
 
-size_t atom_set_border_offset(const sotl_atom_set_t *set)
-{
-    if (!sotl_have_multi()) {
-        /* No need to have borders for a single device. */
-        return 0;
-    }
-    return ROUND(set->natoms * 0.05);
-}
-
 size_t atom_set_border_size(const sotl_atom_set_t *set)
 {
-    return sizeof(calc_t) * atom_set_border_offset(set) * 3;
+    return sizeof(calc_t) * set->offset_ghosts * 3;
 }
 
 size_t atom_set_begin(const sotl_atom_set_t *set)
 {
-    return atom_set_border_offset(set);
+    return set->offset_ghosts;
 }
 
 size_t atom_set_end(const sotl_atom_set_t *set)
@@ -229,7 +230,8 @@ int *atom_set_box_count(const sotl_domain_t *dom, const sotl_atom_set_t *set)
     for (unsigned i = 0; i < set->natoms; i++) {
       int box_id = atom_get_num_box(dom, set->pos.x[i], set->pos.y[i], set->pos.z[i],
 				    BOX_SIZE_INV);
-        boxes[box_id]++;
+
+      boxes[box_id]++;
     }
 
     return boxes;

@@ -56,31 +56,45 @@ void domain_free(sotl_domain_t *dom)
     free(dom->subdomains);
 }
 
-static int find_zcut_values(const sotl_domain_t *dom, const unsigned n,
-                            int *zcuts, int *natoms)
+static unsigned *count_atoms_per_z_planes(const sotl_domain_t *dom)
 {
-    unsigned natoms_per_domains = dom->atom_set->natoms / n;
-    int shift_z = dom->boxes[0] * dom->boxes[1];
-    int shift_y = dom->boxes[0];
-    unsigned natoms_acc = 0;
+    const int shift_z = dom->boxes[0] * dom->boxes[1];
+    const int shift_y = dom->boxes[0];
+    unsigned *z_planes = NULL;
     int *boxes = NULL;
-    int nzcuts = n;
 
-    sotl_log(DEBUG, "natoms_per_domains = %d\n", natoms_per_domains);
+    z_planes = calloc(dom->boxes[2], sizeof(unsigned));
+    if (!z_planes)
+        return NULL;
 
     boxes = atom_set_box_count(dom, dom->atom_set);
-    if (!boxes)
-        return -1;
+    if (!boxes) {
+        free(z_planes);
+        return NULL;
+    }
 
-    /* For each Z plans. */
     for (unsigned z = 0; z < dom->boxes[2]; z++) {
-        /* Count the number of atoms. */
         for (unsigned y = 0; y < dom->boxes[1]; y++) {
             for (unsigned x = 0; x < dom->boxes[0]; x++) {
                 unsigned idx = z * shift_z + y * shift_y + x;
-                natoms_acc += boxes[idx];
+                z_planes[z] += boxes[idx];
             }
         }
+    }
+
+    free(boxes);
+    return z_planes;
+}
+
+static void find_zcut_values(const sotl_domain_t *dom, const unsigned *z_planes,
+                             const unsigned n, int *zcuts, int *natoms)
+{
+    unsigned natoms_per_domains = dom->atom_set->natoms / n;
+    unsigned natoms_acc = 0;
+    int nzcuts = n;
+
+    for (unsigned z = 0; z < dom->boxes[2]; z++) {
+        natoms_acc += z_planes[z];
 
         if (natoms_acc < natoms_per_domains) {
             /* Do not split while we do not have enough atoms. */
@@ -100,13 +114,11 @@ static int find_zcut_values(const sotl_domain_t *dom, const unsigned n,
             break;
         }
     }
-
-    free(boxes);
-    return 0;
 }
 
 void domain_split(sotl_domain_t *dom, const unsigned n)
 {
+    unsigned *z_planes = NULL;
     int zcuts[n], natoms[n];
 
     /* Allocate and initialize the array of sub domains. */
@@ -124,9 +136,13 @@ void domain_split(sotl_domain_t *dom, const unsigned n)
         return;
     }
 
+    /* Count number atoms per Z planes. */
+    z_planes = count_atoms_per_z_planes(dom);
+    for (unsigned z = 0; z < dom->boxes[2]; z++)
+        fprintf(stderr, "z_planes[%d] = %d\n", z, z_planes[z]);
+
     /* Find z-axis boundaries. */
-    if (find_zcut_values(dom, n, zcuts, natoms) < 0)
-        return;
+    find_zcut_values(dom, z_planes, n, zcuts, natoms);
     for (unsigned i = 0; i < n - 1; i++)
         sotl_log(DEBUG, "zcuts[%d] = %d, natoms[%d] = %d\n", i, zcuts[i], i, natoms[i]);
 
@@ -175,10 +191,23 @@ void domain_split(sotl_domain_t *dom, const unsigned n)
             natom = dom->atom_set->natoms - acc;
         }
 
+        /* Atom set borders (left/right). */
+        if (i == 0) {
+            subdom->atom_set->nghosts_min = 0;
+            subdom->atom_set->nghosts_max = z_planes[zcuts[i]];
+        } else if (i < n - 1) {
+            subdom->atom_set->nghosts_min = z_planes[zcuts[i - 1] - 1];
+            subdom->atom_set->nghosts_max = z_planes[zcuts[i]];
+        } else {
+            subdom->atom_set->nghosts_min = z_planes[zcuts[i - 1] - 1];
+            subdom->atom_set->nghosts_max = z_planes[dom->boxes[2] - 1];
+        }
+
         /* Atom set */
         subdom->atom_set->natoms  = natom;
         subdom->atom_set->current = natom;
         subdom->atom_set->offset  = ROUND(natom);
+        subdom->atom_set->offset_ghosts = dom->atom_set->offset_ghosts;
 
         if (i == 0) {
             /* The first sub atom set points to the global atom set. */
@@ -198,6 +227,8 @@ void domain_split(sotl_domain_t *dom, const unsigned n)
         subdom->atom_set->speed.dy = prev_set->speed.dy + natoms_offset;
         subdom->atom_set->speed.dz = prev_set->speed.dz + natoms_offset;
     }
+
+    free(z_planes);
 
 #if 0 /* XXX: For debugging purposes. */
     fprintf(stderr, "------\n");

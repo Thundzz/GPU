@@ -3,23 +3,41 @@
 #include "global_definitions.h"
 #include "device.h"
 #include "openmp.h"
+#include "sotl.h"
+
 #ifdef HAVE_LIBGL
 #include "vbo.h"
 #endif
 
 #include <stdio.h>
 
+static int *atom_state = NULL;
+
 #ifdef HAVE_LIBGL
+
+#define SHOCK_PERIOD  50
+
 // Update OpenGL Vertex Buffer Object
 //
 static void omp_update_vbo (sotl_device_t *dev)
 {
   sotl_atom_set_t *set = &dev->atom_set;
+  sotl_domain_t *domain = &dev->domain;
 
   for (unsigned n = 0; n < set->natoms; n++) {
     vbo_vertex[n*3 + 0] = set->pos.x[n];
     vbo_vertex[n*3 + 1] = set->pos.y[n];
     vbo_vertex[n*3 + 2] = set->pos.z[n];
+
+    // Atom color depends on z coordinate
+    {
+      float ratio = (set->pos.z[n] - domain->min_ext[2]) / (domain->max_ext[2] - domain->min_ext[2]);
+
+      vbo_color[n*3 + 0] = (1.0 - ratio) * atom_color[0].R + ratio * 1.0;
+      vbo_color[n*3 + 1] = (1.0 - ratio) * atom_color[0].G + ratio * 0.0;
+      vbo_color[n*3 + 2] = (1.0 - ratio) * atom_color[0].B + ratio * 0.0;
+      atom_state[n]--;
+    }
   }
 }
 #endif
@@ -44,8 +62,7 @@ static void omp_gravity (sotl_device_t *dev)
   sotl_atom_set_t *set = &dev->atom_set;
   const calc_t g = 0.005;
 
-  // TODO
-
+  //TODO
 }
 
 static void omp_bounce (sotl_device_t *dev)
@@ -53,8 +70,7 @@ static void omp_bounce (sotl_device_t *dev)
   sotl_atom_set_t *set = &dev->atom_set;
   sotl_domain_t *domain = &dev->domain;
 
-  // TODO
-
+  //TODO
 }
 
 static calc_t squared_distance (sotl_atom_set_t *set, unsigned p1, unsigned p2)
@@ -68,7 +84,6 @@ static calc_t squared_distance (sotl_atom_set_t *set, unsigned p1, unsigned p2)
 
   return dx * dx + dy * dy + dz * dz;
 }
-
 
 static calc_t lennard_jones (calc_t r2)
 {
@@ -154,7 +169,15 @@ void omp_init (sotl_device_t *dev)
   dev->compute = SOTL_COMPUTE_OMP; // dummy op to avoid warning
 }
 
+void omp_alloc_buffers (sotl_device_t *dev)
+{
+  atom_state = calloc(dev->atom_set.natoms, sizeof(int));
+  printf("natoms: %d\n", dev->atom_set.natoms);
+}
+
 void omp_finalize (sotl_device_t *dev)
 {
+  free(atom_state);
+
   dev->compute = SOTL_COMPUTE_OMP; // dummy op to avoid warning
 }

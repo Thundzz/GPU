@@ -115,47 +115,40 @@ sotl_device_t *sotl_display_device (void)
 static void sotl_discover_devices()
 {
   cl_int err;
-  bool fake_device = false;
+  bool no_cpu_device = true;
 
   // Get list of OpenCL platforms detected
-  // 
+  //
   err = clGetPlatformIDs (MAX_PLATFORMS, ocl_pf, &nb_ocl_pfs);
 
   if (err != CL_SUCCESS) {
     sotl_log(WARNING, "Failed to get OpenCL platform IDs\n");
     // Create a fake CPU platform
-    nb_ocl_pfs = 1;
-    fake_device = true;
+    nb_ocl_pfs = 0;
   }
 
   // Print name & vendor for each platform
   //
   for (unsigned int p = 0; p < nb_ocl_pfs; p++) {
     size_t size;
+    char name[1024], vendor[1024];
 
     all_platforms[p].id = ocl_pf[p];
     all_platforms[p].selected = false;
 
-    if (!fake_device) {
-      char name[1024], vendor[1024];
+    err = clGetPlatformInfo (ocl_pf[p], CL_PLATFORM_NAME, 1024, name, &size);
+    if (err == -1001)
+      sotl_log(CRITICAL, "Failed to find the Installable Client Driver (ICD) loader.\n");
+    check (err, "Failed to get Platform Info");
 
-      err = clGetPlatformInfo (ocl_pf[p], CL_PLATFORM_NAME, 1024, name, &size);
-      if (err == -1001)
-	sotl_log(CRITICAL, "Failed to find the Installable Client Driver (ICD) loader.\n");
-      check (err, "Failed to get Platform Info");
+    all_platforms[p].name = xmalloc (size);
+    strcpy (all_platforms[p].name, name);
 
-      all_platforms[p].name = xmalloc (size);
-      strcpy (all_platforms[p].name, name);
+    err = clGetPlatformInfo (ocl_pf[p], CL_PLATFORM_VENDOR, 1024, vendor, &size);
+    check (err, "Failed to get Platform Info");
 
-      err = clGetPlatformInfo (ocl_pf[p], CL_PLATFORM_VENDOR, 1024, vendor, &size);
-      check (err, "Failed to get Platform Info");
-
-      all_platforms[p].vendor = xmalloc (size);
-      strcpy (all_platforms[p].vendor, vendor);
-    } else {
-      all_platforms[p].vendor = str_malloc ("Fake Vendor");
-      all_platforms[p].name = str_malloc ("Fake Platform");
-    }
+    all_platforms[p].vendor = xmalloc (size);
+    strcpy (all_platforms[p].vendor, vendor);
 
     first_dev[p] = nb_ocl_devs;
 
@@ -164,12 +157,9 @@ static void sotl_discover_devices()
     {
       unsigned nb_devices;
 
-      if (!fake_device) {
-	err = clGetDeviceIDs (ocl_pf[p], CL_DEVICE_TYPE_ALL, MAX_DEVICES, 
-			      ocl_dev + nb_ocl_devs, &nb_devices);
-	check (err, "Failed to get OpenCL Devices' IDs");
-      } else
-	nb_devices = 1;
+      err = clGetDeviceIDs (ocl_pf[p], CL_DEVICE_TYPE_ALL, MAX_DEVICES, 
+			    ocl_dev + nb_ocl_devs, &nb_devices);
+      check (err, "Failed to get OpenCL Devices' IDs");
 
       nb_ocl_devs += nb_devices;
       last_dev[p] = nb_ocl_devs - 1;
@@ -187,41 +177,59 @@ static void sotl_discover_devices()
 	  all_devices[d].display = false;
 	  all_devices[d].mem_allocated = 0;
 
-	  if (!fake_device) {
-	    err = clGetDeviceInfo (ocl_dev[d], CL_DEVICE_NAME, 1024, name, &size);
-	    check (err, "Cannot get name of device");
+	  err = clGetDeviceInfo (ocl_dev[d], CL_DEVICE_NAME, 1024, name, &size);
+	  check (err, "Cannot get name of device");
 
-	    all_devices[d].name = xmalloc(size);
-	    strcpy (all_devices[d].name, name);
+	  all_devices[d].name = xmalloc(size);
+	  strcpy (all_devices[d].name, name);
 
-	    err =  clGetDeviceInfo (ocl_dev[d], CL_DEVICE_TYPE,
-				    sizeof (cl_device_type), &dtype, NULL);
-	    check (err, "Cannot get type of device");
+	  err =  clGetDeviceInfo (ocl_dev[d], CL_DEVICE_TYPE,
+				  sizeof (cl_device_type), &dtype, NULL);
+	  check (err, "Cannot get type of device");
 
-	    all_devices[d].type = dtype;
+	  if (dtype == CL_DEVICE_TYPE_CPU)
+	    no_cpu_device = false;
+
+	  all_devices[d].type = dtype;
 
 #ifdef __APPLE__
-	    if(dtype == CL_DEVICE_TYPE_CPU)
-	      all_devices[d].max_workgroup_size = 1;
-	    else
+	  if(dtype == CL_DEVICE_TYPE_CPU)
+	    all_devices[d].max_workgroup_size = 1;
+	  else
 #endif
-	      err = clGetDeviceInfo (ocl_dev[d], CL_DEVICE_MAX_WORK_GROUP_SIZE,
-				     sizeof(size_t), &all_devices[d].max_workgroup_size, &size);
-	    check (err, "Cannot get max workgroup size");
+	    err = clGetDeviceInfo (ocl_dev[d], CL_DEVICE_MAX_WORK_GROUP_SIZE,
+				   sizeof(size_t), &all_devices[d].max_workgroup_size, &size);
+	  check (err, "Cannot get max workgroup size");
 
-	    err = clGetDeviceInfo (ocl_dev[d], CL_DEVICE_GLOBAL_MEM_SIZE,
-				   sizeof(cl_ulong), &all_devices[d].mem_size, &size);
-	    check (err, "Cannot get mem size");
-	  } else {
-	    // Fake device
-	    all_devices[d].name = str_malloc ("Fake CPU Device");
-	    all_devices[d].type = CL_DEVICE_TYPE_CPU;
-	    all_devices[d].max_workgroup_size = 0;
-	    all_devices[d].mem_size = 0;
-	  }
+	  err = clGetDeviceInfo (ocl_dev[d], CL_DEVICE_GLOBAL_MEM_SIZE,
+				 sizeof(cl_ulong), &all_devices[d].mem_size, &size);
+	  check (err, "Cannot get mem size");
 	}
       }
     }
+  }
+
+  // If no OpenCL CPU device was found, create a fake one to enable sequential/OpenMP mode
+  //
+  if (no_cpu_device) {
+    unsigned p = nb_ocl_pfs++;
+    unsigned d = nb_ocl_devs++;
+
+    all_platforms[p].vendor = str_malloc ("Fake Vendor");
+    all_platforms[p].name = str_malloc ("Fake Platform");
+    all_platforms[p].selected = false;
+
+    first_dev[p] = d;
+    last_dev[p] = d;
+
+    all_devices[d].platform = &all_platforms[p];
+    all_devices[d].selected = false;
+    all_devices[d].display = false;
+    all_devices[d].mem_allocated = 0;
+    all_devices[d].name = str_malloc ("Fake CPU Device");
+    all_devices[d].type = CL_DEVICE_TYPE_CPU;
+    all_devices[d].max_workgroup_size = 0;
+    all_devices[d].mem_size = 0;
   }
 }
 
@@ -249,7 +257,8 @@ int sotl_add_ocl_device_by_type(const sotl_device_type t)
     }
 
     for (unsigned d = 0; d < nb_ocl_devs; d++) {
-        if (type == CL_DEVICE_TYPE_ALL || all_devices[d].type == type) {
+      if ((type == CL_DEVICE_TYPE_ALL || all_devices[d].type == type) &&
+	  all_devices[d].max_workgroup_size != 0) {
             all_devices[d].selected = true;
             all_devices[d].compute  = SOTL_COMPUTE_OCL;
             no_device_selected      = false;
@@ -264,8 +273,13 @@ int sotl_add_ocl_device_by_type(const sotl_device_type t)
 
 int sotl_add_ocl_device_by_id(const unsigned dev_id)
 {
-    if (dev_id >= nb_ocl_devs)
-        return SOTL_INVALID_DEVICE;
+  if (dev_id >= nb_ocl_devs)
+    return SOTL_INVALID_DEVICE;
+
+  // Check if device is a fake CPU device
+  //
+  if (all_devices[dev_id].max_workgroup_size == 0)
+    return SOTL_INVALID_DEVICE_TYPE;
 
     all_devices[dev_id].selected = true;
     all_devices[dev_id].compute  = SOTL_COMPUTE_OCL;
@@ -279,8 +293,8 @@ int sotl_add_seq_device_by_id(const unsigned dev_id)
     if (dev_id >= nb_ocl_devs)
         return SOTL_INVALID_DEVICE;
 
-    //if (all_devices[dev_id].type != CL_DEVICE_TYPE_CPU)
-    //    return SOTL_INVALID_DEVICE_TYPE;
+    if (all_devices[dev_id].type != CL_DEVICE_TYPE_CPU)
+        return SOTL_INVALID_DEVICE_TYPE;
 
     all_devices[dev_id].selected = true;
     all_devices[dev_id].compute  = SOTL_COMPUTE_SEQ;
@@ -516,7 +530,8 @@ int sotl_push_pos_1()
 
     for (d = 0; d < sotl_nb_devices; d++) {
         sotl_device_t *dev = sotl_devices[d];
-        update_position(dev);
+        update_position(dev, atom_set_begin(&dev->atom_set),
+                        atom_set_end(&dev->atom_set));
     }
     return SOTL_SUCCESS;
 }
@@ -584,6 +599,10 @@ void sotl_add_random_atom()
 int sotl_runtime_init()
 {
     int ret = 0;
+
+    if (sotl_verbose)
+        sotl_list_devices();
+
 #ifdef HAVE_LIBGL
   if (sotl_display)
     window_opengl_init (DISPLAY_XSIZE, DISPLAY_YSIZE,
@@ -600,15 +619,17 @@ int sotl_runtime_init()
     case SOTL_COMPUTE_SEQ :
       seq_init (sotl_devices[d]);
       break;
-#ifdef HAVE_OMP
     case SOTL_COMPUTE_OMP :
+#ifdef HAVE_OMP
       omp_init (sotl_devices[d]);
       break;
+#else
+      sotl_log(ERROR, "Application was not compiled with OpenMP support\n");
+      return -1;
 #endif
     default :
       sotl_log(ERROR, "Undefined compute method %d\n", sotl_devices[d]->compute);
       return -1;
-      break;
     }
   }
 
@@ -659,11 +680,24 @@ int sotl_runtime_init()
       sotl_devices[d]->atom_set = *get_global_atom_set();
     }
 
-    if (sotl_devices[d]->compute == SOTL_COMPUTE_OCL) {
-
-      ocl_alloc_buffers (sotl_devices[d]);
-      ocl_write_buffers (sotl_devices[d]);
-    }
+   switch (sotl_devices[d]->compute) {
+   case SOTL_COMPUTE_OCL :
+     ocl_alloc_buffers (sotl_devices[d]);
+     ocl_write_buffers (sotl_devices[d]);
+     break;
+   case SOTL_COMPUTE_SEQ :
+     seq_alloc_buffers (sotl_devices[d]);
+     break;
+#ifdef HAVE_OMP
+   case SOTL_COMPUTE_OMP :
+     omp_alloc_buffers (sotl_devices[d]);
+     break;
+#endif
+   default :
+     sotl_log(ERROR, "Undefined compute method %d\n", sotl_devices[d]->compute);
+     return -1;
+     break;
+   }
   }
 
 #ifndef _SPHERE_MODE_
