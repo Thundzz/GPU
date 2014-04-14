@@ -45,4 +45,7 @@ void domain_print(const sotl_domain_t *dom);
  */
 sotl_domain_t *get_global_domain();
 
+//Sort atoms in boxes
+int domain_get_ids(sotl_atom_pos_t pos, sotl_atom_set_t *set);
+
 #endif /* __DOMAIN_H */
