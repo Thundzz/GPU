@@ -926,6 +926,21 @@ void sotl_finalize()
     if (sotl_verbose)
         sotl_log(INFO, "Finalizing...\n");
 
+    for (unsigned d = 0; d < sotl_nb_devices; d++) {
+      switch (sotl_devices[d]->compute) {
+      case SOTL_COMPUTE_SEQ :
+	seq_finalize (sotl_devices[d]);
+	break;
+#ifdef HAVE_OMP
+      case SOTL_COMPUTE_OMP :
+	omp_finalize (sotl_devices[d]);
+	break;
+#endif
+      default :
+	;
+      }
+    }
+
     /* Cleanup OpenCL and OpenGL resources. */
     ocl_finalize ();
 #ifdef HAVE_LIBGL

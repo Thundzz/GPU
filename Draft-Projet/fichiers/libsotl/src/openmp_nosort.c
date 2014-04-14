@@ -15,12 +15,11 @@
 #include <omp.h>
 #include <stdio.h>
 
-int n = 0;
+static int *atom_state = NULL;
+
 float time_force = 0.0;
 float time_bounce = 0.0;
 float time_move = 0.0;
-
-static int *atom_state = NULL;
 
 #ifdef HAVE_LIBGL
 
@@ -75,17 +74,17 @@ static void omp_move (sotl_device_t *dev)
 {
 	struct timeval tv1,tv2;
   sotl_atom_set_t *set = &dev->atom_set;
-  
-  gettimeofday(&tv1,NULL);
 #pragma omp parallel for
   for (unsigned n = 0; n < set->natoms; n++) {
+		gettimeofday(&tv1,NULL);
+		
     set->pos.x[n] += set->speed.dx[n];
     set->pos.y[n] += set->speed.dy[n];
     set->pos.z[n] += set->speed.dz[n];
     
-  }
     gettimeofday(&tv2,NULL);
-		time_move += (float)TIME_DIFF(tv1,tv2);
+		time_move += (float)TIME_DIFF(tv1,tv2)/1000000.0;
+  }
 }
 
 // Apply gravity force
@@ -112,10 +111,9 @@ static void omp_bounce (sotl_device_t *dev)
   float xmax = dev->domain.max_ext[0];
   float ymax = dev->domain.max_ext[1];
   float zmax = dev->domain.max_ext[2];
-  
-  gettimeofday(&tv1,NULL);
   #pragma omp parallel for
   for (unsigned n = 0; n < set->natoms; n++) {
+		gettimeofday(&tv1,NULL);
     if(set->pos.x[n] < xmin || set->pos.x[n] > xmax)
       {
 	set->speed.dx[n] *= -1.0;
@@ -128,9 +126,9 @@ static void omp_bounce (sotl_device_t *dev)
       {
 	set->speed.dz[n] *= -1.0;
       }
-  }
     gettimeofday(&tv2,NULL);
-		time_bounce += (float)TIME_DIFF(tv1,tv2);
+		time_bounce += (float)TIME_DIFF(tv1,tv2)/1000000.0;
+  }
 }
 
 static calc_t squared_distance (sotl_atom_set_t *set, unsigned p1, unsigned p2)
@@ -165,16 +163,12 @@ static void omp_force (sotl_device_t *dev)
 	
   sotl_atom_set_t *set = &dev->atom_set;
 
-	gettimeofday(&tv1,NULL);
 #pragma omp parallel for schedule(dynamic)
   for (unsigned current = 0; current < set->natoms; current++) {
+		gettimeofday(&tv1,NULL);
     calc_t force[3] = { 0.0, 0.0, 0.0 };
 
-    //~ for (unsigned other = 0; other < set->natoms; other++) 
-			// Old
-			
-    for (unsigned other = current+1; other < set->natoms && set->pos.z[other] - set->pos.z[current] < LENNARD_CUTOFF; other++)   
-			//Now takes the atoms near from current according to the sorted array
+    for (unsigned other = 0; other < set->natoms; other++)
       if (current != other) {
 				calc_t sq_dist = squared_distance (set, current, other);
 
@@ -188,29 +182,14 @@ static void omp_force (sotl_device_t *dev)
 								 set->pos.x[set->offset * 2 + other]);
 				}
 		}
-    for (unsigned other = current; other > 0 && set->pos.z[current] - set->pos.z[other-1] < LENNARD_CUTOFF; other--)   
-			//Now takes the atoms near from current according to the sorted array
-      if (current != other-1) {
-				calc_t sq_dist = squared_distance (set, current, other-1);
-
-				if (sq_dist < LENNARD_SQUARED_CUTOFF) {
-					calc_t intensity = lennard_jones (sq_dist);
-
-					force[0] += intensity * (set->pos.x[current] - set->pos.x[other-1]);
-					force[1] += intensity * (set->pos.x[set->offset + current] -
-								 set->pos.x[set->offset + other-1]);
-					force[2] += intensity * (set->pos.x[set->offset * 2 + current] -
-								 set->pos.x[set->offset * 2 + other-1]);
-				}
-		}
 
     set->speed.dx[current] += force[0];
     set->speed.dx[set->offset + current] += force[1];
     set->speed.dx[set->offset * 2 + current] += force[2];
-  }
-      
+    
     gettimeofday(&tv2,NULL);
-    time_force += (float)TIME_DIFF(tv1,tv2);
+    time_force += (float)TIME_DIFF(tv1,tv2)/1000000.0;
+  }
 }
 
 
@@ -218,6 +197,8 @@ static void omp_force (sotl_device_t *dev)
 //
 void omp_one_step_move (sotl_device_t *dev)
 {
+	sotl_atom_set_t *set = &dev->atom_set;
+	
   // Apply gravity force
   //
   if (gravity_enabled)
@@ -236,23 +217,10 @@ void omp_one_step_move (sotl_device_t *dev)
   // Update positions
   //
   omp_move (dev);
-
-	// Sort positions
-  sotl_atom_set_t *set = &dev->atom_set;
+  
+  //Sort positions
   atom_set_sort(set);
-  n++;
-  //Stops time printing after 50 iterations
-  if (n<50)
-		printf("\r=====time_move %.1fus - time_force %.1fus - time_bounce %.1fus=====", time_move/n, time_force/n, time_bounce/n);
-  if (n==50)
-		printf("\n");
-	
-  // Sort check 
-  //~ for (unsigned current = 0; current < set->natoms-1; current++) {
-		//~ if (set->pos.z[current]> set->pos.z[current+1])
-			//~ exit(0);
-		//~ }
-
+  
 #ifdef HAVE_LIBGL
   // Update OpenGL position
   //
@@ -269,7 +237,7 @@ void omp_init (sotl_device_t *dev)
 #endif
 
   borders_enabled = 1;
-	printf("\n");
+
   dev->compute = SOTL_COMPUTE_OMP; // dummy op to avoid warning
 
 }
