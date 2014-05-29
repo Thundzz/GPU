@@ -6,6 +6,13 @@
 *.lib
 *.a
 
+#build paths
+
+Draft-Projet/omp/fichiers/build
+Draft-Projet/omp/fichiers/bin
+Draft-Projet/ocl/fichiers/build
+Draft-Projet/ocl/fichiers/bin
+
 # Shared objects (inc. Windows DLLs)
 *.dll
 *.so

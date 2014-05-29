@@ -1,1 +1,0 @@
-/usr/bin/cc  -g3 -O0    CMakeFiles/atoms.dir/src/tools.c.o CMakeFiles/atoms.dir/src/main.c.o  -o ../bin/atoms -rdynamic libsotl/libsotl.so -lOpenCL -lm -lgomp -lGLU -lGL -lSM -lICE -lX11 -lXext -lglut -lXmu -lXi -Wl,-rpath,/home/yacine/GPU/Draft-Projet/omp/fichiers/build/libsotl 
