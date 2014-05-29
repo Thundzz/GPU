@@ -38,10 +38,10 @@ EQUALS = =
 CMAKE_EDIT_COMMAND = /usr/bin/cmake-gui
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers
+CMAKE_SOURCE_DIR = /home/yacine/GPU/Draft-Projet/ocl/fichiers
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build
+CMAKE_BINARY_DIR = /home/yacine/GPU/Draft-Projet/ocl/fichiers/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/atoms.dir/depend.make
@@ -52,42 +52,19 @@ include CMakeFiles/atoms.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/atoms.dir/flags.make
 
-CMakeFiles/atoms.dir/src/main.c.o: CMakeFiles/atoms.dir/flags.make
-CMakeFiles/atoms.dir/src/main.c.o: ../src/main.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/CMakeFiles $(CMAKE_PROGRESS_1)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/atoms.dir/src/main.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/atoms.dir/src/main.c.o   -c /net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/main.c
-
-CMakeFiles/atoms.dir/src/main.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/atoms.dir/src/main.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/main.c > CMakeFiles/atoms.dir/src/main.c.i
-
-CMakeFiles/atoms.dir/src/main.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/atoms.dir/src/main.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/main.c -o CMakeFiles/atoms.dir/src/main.c.s
-
-CMakeFiles/atoms.dir/src/main.c.o.requires:
-.PHONY : CMakeFiles/atoms.dir/src/main.c.o.requires
-
-CMakeFiles/atoms.dir/src/main.c.o.provides: CMakeFiles/atoms.dir/src/main.c.o.requires
-	$(MAKE) -f CMakeFiles/atoms.dir/build.make CMakeFiles/atoms.dir/src/main.c.o.provides.build
-.PHONY : CMakeFiles/atoms.dir/src/main.c.o.provides
-
-CMakeFiles/atoms.dir/src/main.c.o.provides.build: CMakeFiles/atoms.dir/src/main.c.o
-
 CMakeFiles/atoms.dir/src/tools.c.o: CMakeFiles/atoms.dir/flags.make
 CMakeFiles/atoms.dir/src/tools.c.o: ../src/tools.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/yacine/GPU/Draft-Projet/ocl/fichiers/build/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/atoms.dir/src/tools.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/atoms.dir/src/tools.c.o   -c /net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/tools.c
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/atoms.dir/src/tools.c.o   -c /home/yacine/GPU/Draft-Projet/ocl/fichiers/src/tools.c
 
 CMakeFiles/atoms.dir/src/tools.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/atoms.dir/src/tools.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/tools.c > CMakeFiles/atoms.dir/src/tools.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/yacine/GPU/Draft-Projet/ocl/fichiers/src/tools.c > CMakeFiles/atoms.dir/src/tools.c.i
 
 CMakeFiles/atoms.dir/src/tools.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/atoms.dir/src/tools.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/tools.c -o CMakeFiles/atoms.dir/src/tools.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/yacine/GPU/Draft-Projet/ocl/fichiers/src/tools.c -o CMakeFiles/atoms.dir/src/tools.c.s
 
 CMakeFiles/atoms.dir/src/tools.c.o.requires:
 .PHONY : CMakeFiles/atoms.dir/src/tools.c.o.requires
@@ -98,19 +75,42 @@ CMakeFiles/atoms.dir/src/tools.c.o.provides: CMakeFiles/atoms.dir/src/tools.c.o.
 
 CMakeFiles/atoms.dir/src/tools.c.o.provides.build: CMakeFiles/atoms.dir/src/tools.c.o
 
+CMakeFiles/atoms.dir/src/main.c.o: CMakeFiles/atoms.dir/flags.make
+CMakeFiles/atoms.dir/src/main.c.o: ../src/main.c
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/yacine/GPU/Draft-Projet/ocl/fichiers/build/CMakeFiles $(CMAKE_PROGRESS_2)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/atoms.dir/src/main.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/atoms.dir/src/main.c.o   -c /home/yacine/GPU/Draft-Projet/ocl/fichiers/src/main.c
+
+CMakeFiles/atoms.dir/src/main.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/atoms.dir/src/main.c.i"
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/yacine/GPU/Draft-Projet/ocl/fichiers/src/main.c > CMakeFiles/atoms.dir/src/main.c.i
+
+CMakeFiles/atoms.dir/src/main.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/atoms.dir/src/main.c.s"
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/yacine/GPU/Draft-Projet/ocl/fichiers/src/main.c -o CMakeFiles/atoms.dir/src/main.c.s
+
+CMakeFiles/atoms.dir/src/main.c.o.requires:
+.PHONY : CMakeFiles/atoms.dir/src/main.c.o.requires
+
+CMakeFiles/atoms.dir/src/main.c.o.provides: CMakeFiles/atoms.dir/src/main.c.o.requires
+	$(MAKE) -f CMakeFiles/atoms.dir/build.make CMakeFiles/atoms.dir/src/main.c.o.provides.build
+.PHONY : CMakeFiles/atoms.dir/src/main.c.o.provides
+
+CMakeFiles/atoms.dir/src/main.c.o.provides.build: CMakeFiles/atoms.dir/src/main.c.o
+
 # Object files for target atoms
 atoms_OBJECTS = \
-"CMakeFiles/atoms.dir/src/main.c.o" \
-"CMakeFiles/atoms.dir/src/tools.c.o"
+"CMakeFiles/atoms.dir/src/tools.c.o" \
+"CMakeFiles/atoms.dir/src/main.c.o"
 
 # External object files for target atoms
 atoms_EXTERNAL_OBJECTS =
 
-../bin/atoms: CMakeFiles/atoms.dir/src/main.c.o
 ../bin/atoms: CMakeFiles/atoms.dir/src/tools.c.o
+../bin/atoms: CMakeFiles/atoms.dir/src/main.c.o
 ../bin/atoms: CMakeFiles/atoms.dir/build.make
 ../bin/atoms: libsotl/libsotl.so
-../bin/atoms: /usr/lib/x86_64-linux-gnu/libOpenCL.so
+../bin/atoms: /usr/lib/libOpenCL.so
 ../bin/atoms: /usr/lib/x86_64-linux-gnu/libm.so
 ../bin/atoms: /usr/lib/x86_64-linux-gnu/libGLU.so
 ../bin/atoms: /usr/lib/x86_64-linux-gnu/libGL.so
@@ -129,8 +129,8 @@ atoms_EXTERNAL_OBJECTS =
 CMakeFiles/atoms.dir/build: ../bin/atoms
 .PHONY : CMakeFiles/atoms.dir/build
 
-CMakeFiles/atoms.dir/requires: CMakeFiles/atoms.dir/src/main.c.o.requires
 CMakeFiles/atoms.dir/requires: CMakeFiles/atoms.dir/src/tools.c.o.requires
+CMakeFiles/atoms.dir/requires: CMakeFiles/atoms.dir/src/main.c.o.requires
 .PHONY : CMakeFiles/atoms.dir/requires
 
 CMakeFiles/atoms.dir/clean:
@@ -138,6 +138,6 @@ CMakeFiles/atoms.dir/clean:
 .PHONY : CMakeFiles/atoms.dir/clean
 
 CMakeFiles/atoms.dir/depend:
-	cd /net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers /net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers /net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build /net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build /net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/CMakeFiles/atoms.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/yacine/GPU/Draft-Projet/ocl/fichiers/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/yacine/GPU/Draft-Projet/ocl/fichiers /home/yacine/GPU/Draft-Projet/ocl/fichiers /home/yacine/GPU/Draft-Projet/ocl/fichiers/build /home/yacine/GPU/Draft-Projet/ocl/fichiers/build /home/yacine/GPU/Draft-Projet/ocl/fichiers/build/CMakeFiles/atoms.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/atoms.dir/depend
 

@@ -1,4 +1,4 @@
-# Install script for directory: /net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl
+# Install script for directory: /home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -35,14 +35,14 @@ ENDIF(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   
         message(STATUS "")
-        execute_process(COMMAND ${CMAKE_COMMAND} -E  "/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl.pc" "/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl.pc")
+        execute_process(COMMAND ${CMAKE_COMMAND} -E  "/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl.pc" "/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl.pc")
     
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   
         message(STATUS "")
-        execute_process(COMMAND ${CMAKE_COMMAND} -E  "/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl-config" "/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl-config")
+        execute_process(COMMAND ${CMAKE_COMMAND} -E  "/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl-config" "/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl-config")
     
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
 
@@ -53,7 +53,7 @@ IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libsotl.so"
          RPATH "")
   ENDIF()
-  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl.so")
+  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl.so")
   IF(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libsotl.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libsotl.so")
     IF(CMAKE_INSTALL_DO_STRIP)
@@ -63,14 +63,14 @@ IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
-  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/libsotl" TYPE FILE FILES "/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/include/sotl.h")
+  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/libsotl" TYPE FILE FILES "/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/include/sotl.h")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
-  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl.pc")
+  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl.pc")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
-  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE PROGRAM FILES "/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl-config")
+  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE PROGRAM FILES "/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl-config")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
 

@@ -16,7 +16,7 @@ sotl_internal.h
 sotl.h
 ../libsotl/include/sotl.h
 
-/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/main.c
+/home/yacine/GPU/Draft-Projet/ocl/fichiers/src/main.c
 stdio.h
 -
 stdlib.h
@@ -34,13 +34,13 @@ stdbool.h
 getopt.h
 -
 default_defines.h
-/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/default_defines.h
+/home/yacine/GPU/Draft-Projet/ocl/fichiers/src/default_defines.h
 tools.h
-/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/tools.h
+/home/yacine/GPU/Draft-Projet/ocl/fichiers/src/tools.h
 sotl.h
-/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/sotl.h
+/home/yacine/GPU/Draft-Projet/ocl/fichiers/src/sotl.h
 
-/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/tools.c
+/home/yacine/GPU/Draft-Projet/ocl/fichiers/src/tools.c
 stdbool.h
 -
 stdio.h
@@ -50,13 +50,13 @@ stdlib.h
 math.h
 -
 sotl.h
-/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/sotl.h
+/home/yacine/GPU/Draft-Projet/ocl/fichiers/src/sotl.h
 default_defines.h
-/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/default_defines.h
+/home/yacine/GPU/Draft-Projet/ocl/fichiers/src/default_defines.h
 
-/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/tools.h
+/home/yacine/GPU/Draft-Projet/ocl/fichiers/src/tools.h
 stdbool.h
 -
 sotl.h
-/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/sotl.h
+/home/yacine/GPU/Draft-Projet/ocl/fichiers/src/sotl.h
 

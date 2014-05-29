@@ -1,2 +1,2 @@
-/net/cremi/yeljarrari/S8/GPU/Draft-Projet/omp/fichiers/build/CMakeFiles/atoms.dir
-/net/cremi/yeljarrari/S8/GPU/Draft-Projet/omp/fichiers/build/libsotl/CMakeFiles/sotl.dir
+/home/yacine/GPU/Draft-Projet/omp/fichiers/build/CMakeFiles/atoms.dir
+/home/yacine/GPU/Draft-Projet/omp/fichiers/build/libsotl/CMakeFiles/sotl.dir

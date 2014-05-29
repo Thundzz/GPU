@@ -1,6 +1,6 @@
 FILE(REMOVE_RECURSE
-  "CMakeFiles/atoms.dir/src/main.c.o"
   "CMakeFiles/atoms.dir/src/tools.c.o"
+  "CMakeFiles/atoms.dir/src/main.c.o"
   "../bin/atoms.pdb"
   "../bin/atoms"
 )

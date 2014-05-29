@@ -269,12 +269,3 @@ sotl_domain_t *get_global_domain()
     return &global_domain;
 }
 
-//~ 
-//~ int domain_get_ids(sotl_domain_t *dom, sotl_atom_set_t *set){
-	//~ // Get the id of the box regarding each direction
-//~ #pragma omp parallel for
-	//~ for (unsigned n = 0; n < set->natoms; n++) {
-		//~ bx = (set->pos.x[n] - dom->min_ext[0])/BOX_SIZE;
-		//~ by = (set->pos.y[n] - dom->min_ext[1])/BOX_SIZE;
-		//~ bz = (set->pos.z[n] - dom->min_ext[2])/BOX_SIZE;
-//~ }

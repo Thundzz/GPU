@@ -84,7 +84,7 @@ static void seq_bounce (sotl_device_t *dev)
   float xmax = dev->domain.max_ext[0];
   float ymax = dev->domain.max_ext[1];
   float zmax = dev->domain.max_ext[2];
-  
+
   for (unsigned n = 0; n < set->natoms; n++) {
 
     if(set->pos.x[n] < xmin || set->pos.x[n] > xmax)

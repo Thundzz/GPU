@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="atoms" />
+		<Option makefile_is_custom="1" />
+		<Option default_target="atoms" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="CMake Files/;CMake Files/libsotl/;CMake Files/.cmake_modules/;" />
+		<Build>
+			<Target title="all">
+				<Option type="4" />
+				<Option compiler="gcc" />
+				<MakeCommands>
+					<Build command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 all' />
+					<CompileFile command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;' />
+					<Clean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<DistClean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -f $makefile $target &gt; $(CMD_NULL)" />
+				</MakeCommands>
+			</Target>
+			<Target title="atoms">
+				<Option output="/home/yacine/GPU/Draft-Projet/omp/fichiers/bin/atoms" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="/home/yacine/GPU/Draft-Projet/omp/fichiers/bin" />
+				<Option object_output="./" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="-v -O 1 -o 1 ../conf/choc1.conf" />
+				<Compiler>
+					<Add option="-DUSE_DOUBLE=0" />
+					<Add directory="/home/yacine/GPU/Draft-Projet/omp/fichiers/libsotl/include" />
+					<Add directory="/usr/include" />
+					<Add directory="/usr/include/c++/4.8" />
+					<Add directory="/usr/include/c++/4.8/backward" />
+					<Add directory="/usr/include/x86_64-linux-gnu" />
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/4.8" />
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include" />
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed" />
+					<Add directory="/usr/local/include" />
+				</Compiler>
+				<MakeCommands>
+					<Build command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 atoms' />
+					<CompileFile command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;' />
+					<Clean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<DistClean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -f $makefile $target &gt; $(CMD_NULL)" />
+				</MakeCommands>
+			</Target>
+			<Target title="atoms/fast">
+				<Option output="/home/yacine/GPU/Draft-Projet/omp/fichiers/bin/atoms" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="/home/yacine/GPU/Draft-Projet/omp/fichiers/bin" />
+				<Option object_output="./" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-DUSE_DOUBLE=0" />
+					<Add directory="/home/yacine/GPU/Draft-Projet/omp/fichiers/libsotl/include" />
+					<Add directory="/usr/include" />
+					<Add directory="/usr/include/c++/4.8" />
+					<Add directory="/usr/include/c++/4.8/backward" />
+					<Add directory="/usr/include/x86_64-linux-gnu" />
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/4.8" />
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include" />
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed" />
+					<Add directory="/usr/local/include" />
+				</Compiler>
+				<MakeCommands>
+					<Build command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 atoms/fast' />
+					<CompileFile command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;' />
+					<Clean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<DistClean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -f $makefile $target &gt; $(CMD_NULL)" />
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option type="4" />
+				<Option compiler="gcc" />
+				<MakeCommands>
+					<Build command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 edit_cache' />
+					<CompileFile command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;' />
+					<Clean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<DistClean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -f $makefile $target &gt; $(CMD_NULL)" />
+				</MakeCommands>
+			</Target>
+			<Target title="install">
+				<Option type="4" />
+				<Option compiler="gcc" />
+				<MakeCommands>
+					<Build command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 install' />
+					<CompileFile command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;' />
+					<Clean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<DistClean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -f $makefile $target &gt; $(CMD_NULL)" />
+				</MakeCommands>
+			</Target>
+			<Target title="install/local">
+				<Option type="4" />
+				<Option compiler="gcc" />
+				<MakeCommands>
+					<Build command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 install/local' />
+					<CompileFile command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;' />
+					<Clean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<DistClean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -f $makefile $target &gt; $(CMD_NULL)" />
+				</MakeCommands>
+			</Target>
+			<Target title="install/strip">
+				<Option type="4" />
+				<Option compiler="gcc" />
+				<MakeCommands>
+					<Build command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 install/strip' />
+					<CompileFile command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;' />
+					<Clean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<DistClean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -f $makefile $target &gt; $(CMD_NULL)" />
+				</MakeCommands>
+			</Target>
+			<Target title="list_install_components">
+				<Option type="4" />
+				<Option compiler="gcc" />
+				<MakeCommands>
+					<Build command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 list_install_components' />
+					<CompileFile command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;' />
+					<Clean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<DistClean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -f $makefile $target &gt; $(CMD_NULL)" />
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option type="4" />
+				<Option compiler="gcc" />
+				<MakeCommands>
+					<Build command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 rebuild_cache' />
+					<CompileFile command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;' />
+					<Clean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<DistClean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/Makefile&quot;  VERBOSE=1 clean' />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -f $makefile $target &gt; $(CMD_NULL)" />
+				</MakeCommands>
+			</Target>
+			<Target title="sotl">
+				<Option output="/home/yacine/GPU/Draft-Projet/omp/fichiers/build/libsotl/libsotl.so" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="/home/yacine/GPU/Draft-Projet/omp/fichiers/build/libsotl" />
+				<Option object_output="./" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-DUSE_DOUBLE=0" />
+					<Add option='-DSHADERS_FILES_DIR=&quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/libsotl/src&quot;' />
+					<Add option='-DPROGRAM_NAME=&quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/libsotl/kernel/physics.cl&quot;' />
+					<Add option='-DOCL_INCLUDE=&quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/libsotl/include&quot;' />
+					<Add option="-DHAVE_OMP" />
+					<Add option="-DHAVE_LIBGL" />
+					<Add directory="/home/yacine/GPU/Draft-Projet/omp/fichiers/libsotl" />
+					<Add directory="/home/yacine/GPU/Draft-Projet/omp/fichiers/libsotl/include" />
+					<Add directory="/usr/include" />
+					<Add directory="/usr/include/c++/4.8" />
+					<Add directory="/usr/include/c++/4.8/backward" />
+					<Add directory="/usr/include/x86_64-linux-gnu" />
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/4.8" />
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include" />
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed" />
+					<Add directory="/usr/local/include" />
+				</Compiler>
+				<MakeCommands>
+					<Build command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 sotl' />
+					<CompileFile command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 &quot;$file&quot;' />
+					<Clean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 clean' />
+					<DistClean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 clean' />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -f $makefile $target &gt; $(CMD_NULL)" />
+				</MakeCommands>
+			</Target>
+			<Target title="sotl/fast">
+				<Option output="/home/yacine/GPU/Draft-Projet/omp/fichiers/build/libsotl/libsotl.so" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="/home/yacine/GPU/Draft-Projet/omp/fichiers/build/libsotl" />
+				<Option object_output="./" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-DUSE_DOUBLE=0" />
+					<Add option='-DSHADERS_FILES_DIR=&quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/libsotl/src&quot;' />
+					<Add option='-DPROGRAM_NAME=&quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/libsotl/kernel/physics.cl&quot;' />
+					<Add option='-DOCL_INCLUDE=&quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/libsotl/include&quot;' />
+					<Add option="-DHAVE_OMP" />
+					<Add option="-DHAVE_LIBGL" />
+					<Add directory="/home/yacine/GPU/Draft-Projet/omp/fichiers/libsotl" />
+					<Add directory="/home/yacine/GPU/Draft-Projet/omp/fichiers/libsotl/include" />
+					<Add directory="/usr/include" />
+					<Add directory="/usr/include/c++/4.8" />
+					<Add directory="/usr/include/c++/4.8/backward" />
+					<Add directory="/usr/include/x86_64-linux-gnu" />
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/4.8" />
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include" />
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed" />
+					<Add directory="/usr/local/include" />
+				</Compiler>
+				<MakeCommands>
+					<Build command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 sotl/fast' />
+					<CompileFile command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 &quot;$file&quot;' />
+					<Clean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 clean' />
+					<DistClean command='/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/omp/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 clean' />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -f $makefile $target &gt; $(CMD_NULL)" />
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="../.cmake_modules/FindOpenCL.cmake">
+			<Option virtualFolder="CMake Files/.cmake_modules/" />
+		</Unit>
+		<Unit filename="../CMakeLists.txt">
+			<Option virtualFolder="CMake Files/" />
+		</Unit>
+		<Unit filename="../libsotl/CMakeLists.txt">
+			<Option virtualFolder="CMake Files/libsotl/" />
+		</Unit>
+		<Unit filename="../libsotl/libsotl-config.in">
+			<Option virtualFolder="CMake Files/libsotl/" />
+		</Unit>
+		<Unit filename="../libsotl/libsotl.pc.in">
+			<Option virtualFolder="CMake Files/libsotl/" />
+		</Unit>
+		<Unit filename="../libsotl/src/atom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libsotl/src/device.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libsotl/src/domain.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libsotl/src/global_definitions.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libsotl/src/kernel_list.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libsotl/src/ocl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libsotl/src/ocl_kernels.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libsotl/src/openmp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libsotl/src/profiling.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libsotl/src/seq.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libsotl/src/shaders.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libsotl/src/sotl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libsotl/src/util.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libsotl/src/vbo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libsotl/src/window.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/tools.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/tools.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

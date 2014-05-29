@@ -69,8 +69,6 @@ libsotl/CMakeFiles/sotl.dir/src/ocl.c.o: ../libsotl/include/util.h
 libsotl/CMakeFiles/sotl.dir/src/ocl.c.o: ../libsotl/include/vbo.h
 libsotl/CMakeFiles/sotl.dir/src/ocl.c.o: ../libsotl/include/window.h
 libsotl/CMakeFiles/sotl.dir/src/ocl.c.o: ../libsotl/src/ocl.c
-libsotl/CMakeFiles/sotl.dir/src/ocl.c.o: /usr/include/GL/glx.h
-libsotl/CMakeFiles/sotl.dir/src/ocl.c.o: /usr/include/GL/glx_mangle.h
 
 libsotl/CMakeFiles/sotl.dir/src/ocl_kernels.c.o: ../libsotl/include/atom.h
 libsotl/CMakeFiles/sotl.dir/src/ocl_kernels.c.o: ../libsotl/include/cl.h

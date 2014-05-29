@@ -4,8 +4,8 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_C
-  "/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/main.c" "/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/CMakeFiles/atoms.dir/src/main.c.o"
-  "/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/tools.c" "/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/CMakeFiles/atoms.dir/src/tools.c.o"
+  "/home/yacine/GPU/Draft-Projet/ocl/fichiers/src/main.c" "/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/CMakeFiles/atoms.dir/src/main.c.o"
+  "/home/yacine/GPU/Draft-Projet/ocl/fichiers/src/tools.c" "/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/CMakeFiles/atoms.dir/src/tools.c.o"
   )
 SET(CMAKE_C_COMPILER_ID "GNU")
 
@@ -16,7 +16,7 @@ SET(CMAKE_TARGET_DEFINITIONS
 
 # Targets to which this target links.
 SET(CMAKE_TARGET_LINKED_INFO_FILES
-  "/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/CMakeFiles/sotl.dir/DependInfo.cmake"
+  "/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/CMakeFiles/sotl.dir/DependInfo.cmake"
   )
 
 # The include file search paths:

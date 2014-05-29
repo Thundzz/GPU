@@ -8,24 +8,24 @@
       <Option virtualFolders="CMake Files\;CMake Files\libsotl\;CMake Files\.cmake_modules\;" />
       <Build>
       <Target title="all">
-         <Option working_dir="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build" />
+         <Option working_dir="/home/yacine/GPU/Draft-Projet/ocl/fichiers/build" />
          <Option type="4" />
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 all" />
-            <CompileFile command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
-            <Clean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
-            <DistClean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <Build command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 all" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
       <Target title="atoms">
-         <Option output="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/bin/atoms" prefix_auto="0" extension_auto="0" />
-         <Option working_dir="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/bin" />
+         <Option output="/home/yacine/GPU/Draft-Projet/ocl/fichiers/bin/atoms" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/yacine/GPU/Draft-Projet/ocl/fichiers/bin" />
          <Option object_output="./" />
          <Option type="1" />
          <Option compiler="gcc" />
          <Compiler>
             <Add option="-DUSE_DOUBLE=0" />
-            <Add directory="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/include" />
+            <Add directory="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/include" />
             <Add directory="/usr/include" />
             <Add directory="/usr/include/c++/4.8" />
             <Add directory="/usr/include/c++/4.8/backward" />
@@ -36,21 +36,21 @@
             <Add directory="/usr/local/include" />
          </Compiler>
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 atoms" />
-            <CompileFile command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
-            <Clean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
-            <DistClean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <Build command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 atoms" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
       <Target title="atoms/fast">
-         <Option output="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/bin/atoms" prefix_auto="0" extension_auto="0" />
-         <Option working_dir="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/bin" />
+         <Option output="/home/yacine/GPU/Draft-Projet/ocl/fichiers/bin/atoms" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/yacine/GPU/Draft-Projet/ocl/fichiers/bin" />
          <Option object_output="./" />
          <Option type="1" />
          <Option compiler="gcc" />
          <Compiler>
             <Add option="-DUSE_DOUBLE=0" />
-            <Add directory="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/include" />
+            <Add directory="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/include" />
             <Add directory="/usr/include" />
             <Add directory="/usr/include/c++/4.8" />
             <Add directory="/usr/include/c++/4.8/backward" />
@@ -61,87 +61,87 @@
             <Add directory="/usr/local/include" />
          </Compiler>
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 atoms/fast" />
-            <CompileFile command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
-            <Clean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
-            <DistClean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <Build command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 atoms/fast" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
       <Target title="edit_cache">
-         <Option working_dir="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build" />
+         <Option working_dir="/home/yacine/GPU/Draft-Projet/ocl/fichiers/build" />
          <Option type="4" />
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 edit_cache" />
-            <CompileFile command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
-            <Clean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
-            <DistClean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <Build command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 edit_cache" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
       <Target title="install">
-         <Option working_dir="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build" />
+         <Option working_dir="/home/yacine/GPU/Draft-Projet/ocl/fichiers/build" />
          <Option type="4" />
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 install" />
-            <CompileFile command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
-            <Clean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
-            <DistClean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <Build command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 install" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
       <Target title="install/local">
-         <Option working_dir="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build" />
+         <Option working_dir="/home/yacine/GPU/Draft-Projet/ocl/fichiers/build" />
          <Option type="4" />
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 install/local" />
-            <CompileFile command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
-            <Clean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
-            <DistClean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <Build command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 install/local" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
       <Target title="install/strip">
-         <Option working_dir="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build" />
+         <Option working_dir="/home/yacine/GPU/Draft-Projet/ocl/fichiers/build" />
          <Option type="4" />
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 install/strip" />
-            <CompileFile command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
-            <Clean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
-            <DistClean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <Build command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 install/strip" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
       <Target title="list_install_components">
-         <Option working_dir="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build" />
+         <Option working_dir="/home/yacine/GPU/Draft-Projet/ocl/fichiers/build" />
          <Option type="4" />
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 list_install_components" />
-            <CompileFile command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
-            <Clean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
-            <DistClean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <Build command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 list_install_components" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
       <Target title="rebuild_cache">
-         <Option working_dir="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build" />
+         <Option working_dir="/home/yacine/GPU/Draft-Projet/ocl/fichiers/build" />
          <Option type="4" />
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 rebuild_cache" />
-            <CompileFile command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
-            <Clean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
-            <DistClean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <Build command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 rebuild_cache" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
       <Target title="sotl">
-         <Option output="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl.so" prefix_auto="0" extension_auto="0" />
-         <Option working_dir="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl" />
+         <Option output="/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl.so" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl" />
          <Option object_output="./" />
          <Option type="3" />
          <Option compiler="gcc" />
          <Compiler>
             <Add option="-DUSE_DOUBLE=0" />
-            <Add option="-DSHADERS_FILES_DIR=&quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/src&quot;" />
-            <Add option="-DPROGRAM_NAME=&quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/kernel/physics.cl&quot;" />
-            <Add option="-DOCL_INCLUDE=&quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/include&quot;" />
+            <Add option="-DSHADERS_FILES_DIR=&quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/src&quot;" />
+            <Add option="-DPROGRAM_NAME=&quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/kernel/physics.cl&quot;" />
+            <Add option="-DOCL_INCLUDE=&quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/include&quot;" />
             <Add option="-DHAVE_OMP" />
             <Add option="-DHAVE_LIBGL" />
-            <Add directory="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl" />
-            <Add directory="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/include" />
+            <Add directory="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl" />
+            <Add directory="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/include" />
             <Add directory="/usr/include" />
             <Add directory="/usr/include/c++/4.8" />
             <Add directory="/usr/include/c++/4.8/backward" />
@@ -152,27 +152,27 @@
             <Add directory="/usr/local/include" />
          </Compiler>
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 sotl" />
-            <CompileFile command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
-            <Clean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 clean" />
-            <DistClean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 clean" />
+            <Build command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 sotl" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
       <Target title="sotl/fast">
-         <Option output="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl.so" prefix_auto="0" extension_auto="0" />
-         <Option working_dir="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl" />
+         <Option output="/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/libsotl.so" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl" />
          <Option object_output="./" />
          <Option type="3" />
          <Option compiler="gcc" />
          <Compiler>
             <Add option="-DUSE_DOUBLE=0" />
-            <Add option="-DSHADERS_FILES_DIR=&quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/src&quot;" />
-            <Add option="-DPROGRAM_NAME=&quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/kernel/physics.cl&quot;" />
-            <Add option="-DOCL_INCLUDE=&quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/include&quot;" />
+            <Add option="-DSHADERS_FILES_DIR=&quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/src&quot;" />
+            <Add option="-DPROGRAM_NAME=&quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/kernel/physics.cl&quot;" />
+            <Add option="-DOCL_INCLUDE=&quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/include&quot;" />
             <Add option="-DHAVE_OMP" />
             <Add option="-DHAVE_LIBGL" />
-            <Add directory="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl" />
-            <Add directory="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/include" />
+            <Add directory="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl" />
+            <Add directory="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/include" />
             <Add directory="/usr/include" />
             <Add directory="/usr/include/c++/4.8" />
             <Add directory="/usr/include/c++/4.8/backward" />
@@ -183,62 +183,62 @@
             <Add directory="/usr/local/include" />
          </Compiler>
          <MakeCommands>
-            <Build command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 sotl/fast" />
-            <CompileFile command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
-            <Clean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 clean" />
-            <DistClean command="/usr/bin/make -f &quot;/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 clean" />
+            <Build command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 sotl/fast" />
+            <CompileFile command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/make -f &quot;/home/yacine/GPU/Draft-Projet/ocl/fichiers/build/libsotl/Makefile&quot;  VERBOSE=1 clean" />
          </MakeCommands>
       </Target>
       </Build>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/src/atom.c">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/src/atom.c">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/src/device.c">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/src/device.c">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/src/domain.c">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/src/domain.c">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/src/global_definitions.c">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/src/global_definitions.c">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/src/kernel_list.c">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/src/kernel_list.c">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/src/ocl.c">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/src/ocl.c">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/src/ocl_kernels.c">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/src/ocl_kernels.c">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/src/openmp.c">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/src/openmp.c">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/src/profiling.c">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/src/profiling.c">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/src/seq.c">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/src/seq.c">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/src/shaders.c">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/src/shaders.c">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/src/sotl.c">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/src/sotl.c">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/src/util.c">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/src/util.c">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/src/vbo.c">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/src/vbo.c">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/src/window.c">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/src/window.c">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/main.c">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/src/main.c">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/tools.c">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/src/tools.c">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/src/tools.h">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/src/tools.h">
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/CMakeLists.txt">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/CMakeLists.txt">
           <Option virtualFolder="CMake Files\" />
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/CMakeLists.txt">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/CMakeLists.txt">
           <Option virtualFolder="CMake Files\libsotl\" />
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/libsotl.pc.in">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/libsotl.pc.in">
           <Option virtualFolder="CMake Files\libsotl\" />
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/libsotl/libsotl-config.in">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/libsotl/libsotl-config.in">
           <Option virtualFolder="CMake Files\libsotl\" />
       </Unit>
-      <Unit filename="/net/cremi/yeljarrari/S8/GPU/Draft-Projet/ocl/fichiers/.cmake_modules/FindOpenCL.cmake">
+      <Unit filename="/home/yacine/GPU/Draft-Projet/ocl/fichiers/.cmake_modules/FindOpenCL.cmake">
           <Option virtualFolder="CMake Files\.cmake_modules\" />
       </Unit>
    </Project>

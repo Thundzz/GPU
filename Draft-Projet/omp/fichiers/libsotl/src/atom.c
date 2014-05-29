@@ -61,6 +61,7 @@ static void heap_sort(sotl_atom_set_t *set, const unsigned count)
     }
 }
 
+
 static void sift_down(sotl_atom_set_t *set, const int start, const int end)
 {
     int root = start;
@@ -203,17 +204,17 @@ void atom_build (int natoms, sotl_atom_pos_t * pos_vec)
 int atom_get_num_box(const sotl_domain_t *dom, const calc_t x, const calc_t y,
                      const calc_t z, const calc_t rrc)
 {
-    int box_x, box_y, box_z;
+    calc_t box_x, box_y, box_z;
     int box_id;
 
     box_x = (x - dom->min_border[0]) * rrc;
     box_y = (y - dom->min_border[1]) * rrc;
     box_z = (z - dom->min_border[2]) * rrc;
 
+
     box_id =  box_z * dom->boxes[0] * dom->boxes[1] +
               box_y * dom->boxes[0] +
               box_x;
-
     assert(box_id >= 0 && (unsigned)box_id < dom->total_boxes);
     return box_id;
 }
