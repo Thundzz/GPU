@@ -501,21 +501,8 @@ void omp_one_step_move (sotl_device_t *dev)
     // Update positions
     //
     omp_move (dev);
-
-
-
     n++;
-    //Stops time printing after 50 iterations
-    if (n<50)
-        printf("\r=====time_move %.1fus - time_force %.1fus - time_bounce %.1fus=====", time_move/n, time_force/n, time_bounce/n);
-    if (n==50)
-        printf("\n");
 
-    // Sort check
-    //~ for (unsigned current = 0; current < set->natoms-1; current++) {
-    //~ if (set->pos.z[current]> set->pos.z[current+1])
-    //~ exit(0);
-    //~ }
 
 #ifdef HAVE_LIBGL
     // Update OpenGL position
@@ -557,6 +544,9 @@ void omp_alloc_buffers (sotl_device_t *dev)
 
 void omp_finalize (sotl_device_t *dev)
 {
+    printf("Calculation time after %d iterations : %.1fms\n", n,(time_move+time_force+time_bounce)/1000);
+    printf("Details per iteration\n");
+    printf("=====time_move %.1fus - time_force %.1fus - time_bounce %.1fus=====\n", time_move/n, time_force/n, time_bounce/n);
     free(atom_state);
     free(box_count);
     free(box_count_cummul);
