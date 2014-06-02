@@ -106,7 +106,7 @@ void ocl_init(sotl_device_t *dev)
     check (err, "Failed to create compute context \n");
 
     // Load program source
-    // 
+    //
     const char *opencl_prog;
     opencl_prog = file_get_contents(PROGRAM_NAME);
     if (!opencl_prog) {
@@ -114,7 +114,7 @@ void ocl_init(sotl_device_t *dev)
     }
 
     // Build program
-    // 
+    //
     dev->program = clCreateProgramWithSource (dev->context, 1, &opencl_prog, NULL, &err);
     check (err, "Failed to create program");
 
@@ -141,7 +141,7 @@ void ocl_init(sotl_device_t *dev)
 #ifdef SLIDE
 	     "-DSLIDE=%d "
 #endif
-	     OPENCL_PROG_STRING_OPTIONS " -I "OCL_INCLUDE " " 
+	     OPENCL_PROG_STRING_OPTIONS " -I "OCL_INCLUDE " "
 	     LENNARD_STRING,
 	     dev->tile_size,
 	     SUBCELL,
@@ -195,7 +195,7 @@ void ocl_init(sotl_device_t *dev)
       size_t len;
 
       // Display compiler error log
-      // 
+      //
       clGetProgramBuildInfo (dev->program, dev->id,
 			     CL_PROGRAM_BUILD_LOG, 0, NULL, &len);
         {

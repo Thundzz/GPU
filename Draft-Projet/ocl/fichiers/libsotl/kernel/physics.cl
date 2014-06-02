@@ -173,65 +173,65 @@ void lennard_jones (__global calc_t * pos,
 {
     // TODO
     /* Version naive */
-//	coord_t mypos, myspd, other;
-//    calc_t intensity, d2;
-//
-//	int moi = get_global_id(0);
-//	int local_moi = get_local_id(0);
-//
-//	mypos = load3coord (pos + moi, offset);
-//	myspd = load3coord (speed + moi, offset);
-//
-//	for (unsigned n = 0; n < natoms; n++)
-//	{
-//		if(n != moi){
-//			other = load3coord (pos + n, offset);
-//			d2 = squared_dist (mypos, other);
-//			if(d2 < LENNARD_SQUARED_CUTOFF){
-//				intensity = lj_squared_v(d2);
-//				myspd.x += intensity * (mypos.x - other.x);
-//				myspd.y += intensity * (mypos.y - other.y);
-//				myspd.z += intensity * (mypos.z - other.z);
-//			}
-//		}
-//	}
-//    store3coord(speed + moi, myspd, offset);
+	coord_t mypos, myspd, other;
+    calc_t intensity, d2;
+
+	int moi = get_global_id(0);
+	int local_moi = get_local_id(0);
+
+	mypos = load3coord (pos + moi, offset);
+	myspd = load3coord (speed + moi, offset);
+
+	for (unsigned n = 0; n < natoms; n++)
+	{
+		if(n != moi){
+			other = load3coord (pos + n, offset);
+			d2 = squared_dist (mypos, other);
+			if(d2 < LENNARD_SQUARED_CUTOFF){
+				intensity = lj_squared_v(d2);
+				myspd.x += intensity * (mypos.x - other.x);
+				myspd.y += intensity * (mypos.y - other.y);
+				myspd.z += intensity * (mypos.z - other.z);
+			}
+		}
+	}
+    store3coord(speed + moi, myspd, offset);
 
     /*Fin de la version naive*/
 
     /*Version avec table de coordonnees locale */
-    coord_t mypos, myspd, other;
-    calc_t intensity, d2;
-    __local coord_t local_coord[TILE_SIZE];
-
-    int moi = get_global_id(0);
-    int local_moi = get_local_id(0);
-
-    mypos = load3coord (pos + moi, offset);
-    myspd = load3coord (speed + moi, offset);
-    for (unsigned n = 0; n < natoms; n+=TILE_SIZE)
-    {
-        local_coord[local_moi] = load3coord(pos+local_moi+n, offset);
-        barrier(CLK_LOCAL_MEM_FENCE);
-
-        for (unsigned m = 0; m+n<natoms && m<TILE_SIZE; m++)
-        {
-            if(m+n != moi)
-            {
-                other = local_coord[m];
-                d2 = squared_dist (mypos, other);
-                if(d2 < LENNARD_SQUARED_CUTOFF)
-                {
-                    intensity = lj_squared_v(d2);
-                    myspd.x += intensity * (mypos.x - other.x);
-                    myspd.y += intensity * (mypos.y - other.y);
-                    myspd.z += intensity * (mypos.z - other.z);
-                }
-            }
-        }
-        barrier(CLK_LOCAL_MEM_FENCE);
-    }
-    store3coord(speed + moi, myspd, offset);
+//    coord_t mypos, myspd, other;
+//    calc_t intensity, d2;
+//    __local coord_t local_coord[TILE_SIZE];
+//
+//    int moi = get_global_id(0);
+//    int local_moi = get_local_id(0);
+//
+//    mypos = load3coord (pos + moi, offset);
+//    myspd = load3coord (speed + moi, offset);
+//    for (unsigned n = 0; n < natoms; n+=TILE_SIZE)
+//    {
+//        local_coord[local_moi] = load3coord(pos+local_moi+n, offset);
+//        barrier(CLK_LOCAL_MEM_FENCE);
+//
+//        for (unsigned m = 0; m+n<natoms && m<TILE_SIZE; m++)
+//        {
+//            if(m+n != moi)
+//            {
+//                other = local_coord[m];
+//                d2 = squared_dist (mypos, other);
+//                if(d2 < LENNARD_SQUARED_CUTOFF)
+//                {
+//                    intensity = lj_squared_v(d2);
+//                    myspd.x += intensity * (mypos.x - other.x);
+//                    myspd.y += intensity * (mypos.y - other.y);
+//                    myspd.z += intensity * (mypos.z - other.z);
+//                }
+//            }
+//        }
+//        barrier(CLK_LOCAL_MEM_FENCE);
+//    }
+//    store3coord(speed + moi, myspd, offset);
     /*Fin de la version avec table de coordonnees locale */
 
 
