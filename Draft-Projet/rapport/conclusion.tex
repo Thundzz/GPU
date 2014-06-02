@@ -1,0 +1,7 @@
+\section{Conclusion}
+
+Ce projet a permis de mettre en lumière que le simple fait d'utiliser du matériel plus puissant, notamment avec plus de c\oe urs, n'est pas une condition suffisante pour accélérer les calculs. 
+Au contraire, c'est en adaptant le code qu'il est possible d'améliorer les temps de calcul.
+Par exemple avec l'utilisation d'OpenMP afin de tirer profit de chaque c\oe ur du processeur. 
+
+Mais c'est surtout en adaptant le code aux problèmes qu'il doit résoudre qu'on atteint de meilleurs résultats, on le voit dans ce projet par l'influence des tris dans les courbes de performances : Un mauvais algorithme en $O(n^2)$, même s'il est effectué sur un GPU d'une centaine de de c\oe urs, face à un problème de grande échelle sera quand même bien moins performant qu'un algorithme de complexité réduite par une bonne analyse du problème, tournant sur un CPU.
